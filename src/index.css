@@ -1,0 +1,217 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  src: local('Inter'), url(./fonts/Inter.ttf), format('ttf');
+  font-display: swap;
+}
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --primary-clr-100:#3662E3;
+  --primary-clr-200:#C2DAF9;
+  
+  --ntrl-clr-100:#121826;
+  --ntrl-clr-200:#212936;
+  --ntrl-clr-400:#E5E7EB;
+  --ntrl-clr-500:#F9FAFB;
+  --ntrl-clr-600:#F9FAFBCC;
+
+  /* Text Colors */
+  --text-clr-100:#121826;
+  --text-clr-200:#212936;
+  --text-clr-300:#4D5562;
+
+  --fill-clr-100:#4D5562;
+
+  /* BG Colors */
+  --bg-clr-100:#F9FAFB;
+  --bg-clr-200:#FFFFFF;
+  --bg-clr-300:#E5E7EB;
+  --cross-bg-clr-100:rgba(229, 231, 235, 0.45);
+
+  --clr-white:#FFFFFF;
+  
+}
+html.dark {
+  --primary-clr-100:#3662E3;
+  --primary-clr-200:#C2DAF9;
+  --ntrl-clr-100:#121826;
+  --ntrl-clr-200:#212936;
+  
+  --ntrl-clr-400:#8b919c;
+  
+  /* BG Colors */
+  --bg-clr-100:#121826;
+  --bg-clr-200:#212936;
+  --bg-clr-300:#4D5562;
+  --cross-bg-clr-100:#E5E7EB;
+
+ /* Text Colors */
+  --text-clr-100:#E5E7EB;
+  --text-clr-200:#212936;
+  --text-clr-300:#F9FAFB;
+
+  --fill-clr-100:#f9fafb;
+
+  --ntrl-clr-600:#F9FAFBCC;
+  --clr-white:#FFFFFF;
+  --cr:  #4d5562;
+}
+
+body {
+  font-family: 'Inter';
+  background-color: var(--bg-clr-100);
+  min-height: 100vh;
+  font-size: 14px;
+}
+
+.wrapper {
+  max-width: 1140px;    /* Keeps content from stretching too wide */
+  margin: 0 auto;        /* Centers the container horizontally */
+  width: 100%;           /* Full width by default */
+  box-sizing: border-box; /* Ensures padding doesn't break the layout */
+}
+@media (max-width: 560px) {
+  .wrapper {
+    margin: 0 auto;        /* Centers the container horizontally */
+  }
+}
+
+/* TEXT Colors */
+.text-primary-100 {
+  color: var(--primary-clr-100);
+}
+.text-primary-200 {
+  color: var(--primary-clr-200);
+}
+.text-clr-100 {
+  color: var(--text-clr-100);
+}
+.text-clr-200 {
+  color: var(--text-clr-200);
+}
+.text-clr-300 {
+  color: var(--text-clr-300);
+}
+.text-ntrl-300 {
+  color: var(--bg-clr-200);
+}
+.text-ntrl-400 {
+  color: var(--ntrl-clr-400);
+}
+.text-ntrl-500 {
+  color: var(--ntrl-clr-500);
+}
+.text-ntrl-600 {
+  color: var(--ntrl-clr-600);
+}
+.text-clr-white {
+  color: var(--clr-white);
+}
+/* BG Colors */
+.bg-primary-100 {
+  background-color: var(--primary-clr-100);
+}
+.bg-primary-200 {
+  background-color: var(--primary-clr-200);
+}
+.bg-clr-100 {
+  background-color: var(--bg-clr-100);
+}
+.bg-clr-200 {
+  background-color: var(--bg-clr-200);
+}
+.bg-clr-300 {
+  background-color: var(--bg-clr-300);
+}
+.cross-bg-clr-100 {
+  background-color: var(--cross-bg-clr-100);
+}
+.bg-ntrl-100 {
+  background-color: var(--ntrl-clr-100);
+}
+.bg-ntrl-200 {
+  background-color: var(--ntrl-clr-200);
+}
+
+.bg-ntrl-400 {
+  background-color: var(--ntrl-clr-400);
+}
+
+.bg-ntrl-600 {
+  background-color: var(--ntrl-clr-600);
+}
+.bg-clr-white {
+  background-color: var(--clr-white);
+}
+/* BORDER Colors */
+.border-primary-100 {
+  border-color: var(--primary-clr-100);
+}
+.border-clr-100 {
+  border-color: var(--ntrl-clr-400);
+}
+
+/* Fill Colors */
+.fill-clr-100 {
+  fill: var(--fill-clr-100);
+}
+/* Hover,Focus */
+.bg-primary-100-hover:hover,
+.bg-primary-100-hover:focus {
+  background-color: var(--primary-clr-100);
+}
+.bg-primary-200-hover:hover,
+.bg-primary-200-hover:focus {
+  background-color: var(--primary-clr-200);
+}
+
+/* Social icons */
+.social-fill-white-hover:hover svg,
+.social-fill-white-hover:focus svg,
+.social-fill-white-hover:focus-within svg {
+  fill: white;
+}
+/* Loading Bar */
+.loading-bar .innerbar{
+  animation: loading-animation 2s linear infinite;
+}
+.animate-swipeup {
+  animation: swipeup 200ms ease-in-out;
+}
+@keyframes loading-animation {
+  0% {
+    left: -20%;
+  }
+  50% {
+    left: 100%;
+  }
+  100% {
+    left: -20%;
+  }
+}
+
+@keyframes swipeup {
+  0% {
+    transform: translateY(60px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
