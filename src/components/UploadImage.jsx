@@ -26,8 +26,14 @@ export default function UploadImage({ setImageIsUploading, setUrlImageData, setP
         uploadImageToCloudinary(imageData, (progressPercentage) => { setProgress(progressPercentage)})
             .then(res => {
                 if(res.status == 200) {
+                    const secureUrl = res.data.url.replace(/^http:/, 'https:');
+                    const data = {
+                        ...res.data,
+                        url: secureUrl
+                    }
+                    console.log(data)
                     setImageIsUploading(false);
-                    setUrlImageData(res.data)
+                    setUrlImageData(data)
                 } else {
                     console.log('err')
                     window.location.href = '/oops';
