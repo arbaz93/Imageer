@@ -12,7 +12,7 @@ export default function ImageUploadSuccess({ urlImageData }) {
     try {
       setIsDownloading(true);
 
-      const response = await fetch(urlImageData.url);
+      const response = await fetch(urlImageData.url, { mode: 'cors' });
       const blob = await response.blob();
       const blobUrl = URL.createObjectURL(blob);
 
