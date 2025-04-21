@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { uploadImageToCloudinary } from '../js/cloudinary/cloudinaryFunctions';
+import { sendImageIdToServerForDeletionAfterMonth } from '../js/serverFunctions';
 
 export default function UploadImage({ setImageIsUploading, setUrlImageData, setProgress }) {
 
@@ -32,6 +33,7 @@ export default function UploadImage({ setImageIsUploading, setUrlImageData, setP
                         url: secureUrl
                     }
                     console.log(data)
+                    sendImageIdToServerForDeletionAfterMonth(res.data.public_id);
                     setImageIsUploading(false);
                     setUrlImageData(data)
                 } else {
