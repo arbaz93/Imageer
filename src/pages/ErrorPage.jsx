@@ -1,8 +1,4 @@
-import React, { useState } from 'react';
-
 const ErrorPage = () => {
-    const initialColorScheme = localStorage.getItem('imageerColorScheme') || 'light';
-    const [colorScheme, setColorScheme] = useState(initialColorScheme);
 
     return (
         <div className={"absolute top-0 left-0 h-screen w-screen flex items-center justify-center bg-clr-100  px-4 "}>
