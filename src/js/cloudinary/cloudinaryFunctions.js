@@ -2,8 +2,6 @@ import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const CLOUD_NAME = import.meta.env.VITE_CLOUD_NAME;
-const API_KEY = import.meta.env.VITE_API_KEY;
-const API_SECRET = import.meta.env.VITE_API_SECRET;
 const UNSIGNED_PRESET_NAME = import.meta.env.VITE_UNSIGNED_PRESET_NAME;
 const uploadUrl = `${BASE_URL}/${CLOUD_NAME}/image/upload`;
 

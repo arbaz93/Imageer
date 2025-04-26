@@ -187,7 +187,7 @@ body {
 }
 /* Loading Bar */
 .loading-bar .innerbar{
-  animation: loading-animation 2s linear infinite;
+  /* animation: loading-animation 2s linear infinite; */
 }
 .animate-swipeup {
   animation: swipeup 200ms ease-in-out;

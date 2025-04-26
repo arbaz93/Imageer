@@ -8,9 +8,10 @@ export async function sendImageIdToServerForDeletionAfterMonth(id) {
         'timestamp': Date.now()
     }
     try {
-        const req = axios.post(`${serverUrl}/delete-image-time-month`, payload);
-        console.log('success', req);
+        const res = await axios.post(`${serverUrl}/delete-image-time-month`, payload);
+        return res;
     } catch(err) {
-        console.error(err)
+        console.error(err);
+        return res;
     }
 }

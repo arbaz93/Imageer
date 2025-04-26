@@ -1,8 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { uploadImageToCloudinary } from '../js/cloudinary/cloudinaryFunctions';
 import { sendImageIdToServerForDeletionAfterMonth } from '../js/serverFunctions';
 
-export default function UploadImage({ setImageIsUploading, setUrlImageData, setProgress }) {
+export default function UploadImage({ setImageIsUploading, setUrlImageData, setProgress, setLoadingStatus }) {
 
     const inputRef = useRef(null);
 
@@ -25,19 +25,20 @@ export default function UploadImage({ setImageIsUploading, setUrlImageData, setP
         }
         setImageIsUploading(true);
         uploadImageToCloudinary(imageData, (progressPercentage) => { setProgress(progressPercentage)})
-            .then(res => {
+            .then(async (res) => {
                 if(res.status == 200) {
+                    setLoadingStatus('Processing image');
+                    const req = await sendImageIdToServerForDeletionAfterMonth(res.data.public_id);
                     const secureUrl = res.data.url.replace(/^http:/, 'https:');
                     const data = {
                         ...res.data,
                         url: secureUrl
                     }
-                    console.log(data)
-                    sendImageIdToServerForDeletionAfterMonth(res.data.public_id);
+
                     setImageIsUploading(false);
+                    setLoadingStatus('Uploading');
                     setUrlImageData(data)
                 } else {
-                    console.log('err')
                     window.location.href = '/oops';
                 }
             });
