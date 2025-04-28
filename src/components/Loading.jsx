@@ -8,10 +8,11 @@ export default function Loading({ text, progress }) {
     function animate() {
       setCurrWidth(w => {
         const diff = progress - w;
-        if (Math.abs(diff) < 0.5) {
+        if (Math.abs(diff) < 0.2) {
           cancelAnimationFrame(animationRef.current);
           return progress; // snap to target if close enough
         }
+        console.log('diff = ' + diff)
         return w + diff / 5; // smooth interpolation
       });
 

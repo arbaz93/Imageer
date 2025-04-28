@@ -1,10 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useRef, forwardRef } from 'react';
 import { uploadImageToCloudinary } from '../js/cloudinary/cloudinaryFunctions';
 import { sendImageIdToServerForDeletionAfterMonth } from '../js/serverFunctions';
 
-export default function UploadImage({ setImageIsUploading, setUrlImageData, setProgress, setLoadingStatus }) {
-
-    const inputRef = useRef(null);
+function UploadImage({ setImageIsUploading, setUrlImageData, setProgress, setLoadingStatus }, inputRef) {
 
     function openFileBrowser() {
         inputRef.current.click();
@@ -50,3 +48,6 @@ export default function UploadImage({ setImageIsUploading, setUrlImageData, setP
         </>
     )
 }
+
+
+export default forwardRef(UploadImage)

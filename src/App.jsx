@@ -9,11 +9,13 @@ import ErrorPage from './pages/ErrorPage';
 export default function App() {
   // Read initial color scheme from localStorage or use 'light' as fallback
   const initialColorScheme = localStorage.getItem('imageerColorScheme') || 'light';
-  const [colorScheme, setColorScheme] = useState('light');
+  const [colorScheme, setColorScheme] = useState(initialColorScheme);
 
   // Update localStorage whenever colorScheme changes
   useEffect(() => {
     localStorage.setItem('imageerColorScheme', colorScheme);
+
+    (colorScheme === 'dark') ? document.documentElement.classList.add('dark') : document.documentElement.classList.remove('dark');
   }, [colorScheme]);
 
   return (

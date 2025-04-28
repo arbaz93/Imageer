@@ -3,7 +3,6 @@ import { ImageUploader, ImageUploadSuccess, Loading } from '../components';
 
 export default function imageUploadPage() {
   // const [file, setFile] = useState(null);
-  const [url, setUrl] = useState(null);
   const [urlImageData, setUrlImageData] = useState(null)
   const [imageIsUploading, setImageIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);

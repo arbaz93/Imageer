@@ -5,7 +5,6 @@ export default function Navigation({ colorScheme, setColorScheme }) {
   function handleColorScheme() {
     const toggleColor = colorScheme === 'dark' ? 'light' : 'dark';
 
-    document.documentElement.classList.toggle('dark')
     setColorScheme(toggleColor);
   }
   return (
