@@ -1,11 +1,13 @@
 import { useState, useRef } from 'react'
 import { crossIcon, linkIcon } from '../utils/constants'
 import {shareFunctions} from '../js/socialShare';
+import { useNotificationStore } from '../zustand/store';
 
 import SocailIcon from './SocailIcon'
 export default function ShareLinksModal({ displayStatus, setShareModalIsShowing, fileUrl }) {
     const [inputIsFocused, setInputIsFocused] = useState(false);
     const inputRef = useRef(null);
+    const setNotifications = useNotificationStore(state => state.setNotifications);
     const socailItem = [
         {
             name: 'share on facebook',
@@ -66,16 +68,16 @@ export default function ShareLinksModal({ displayStatus, setShareModalIsShowing,
         const text = inputRef.current.value;
 
         try {
-           await navigator.clipboard.writeText(text);
-            alert('Copied!');
+            await navigator.clipboard.writeText(text);
+            setNotifications({message:'copied!!!', type:'success'})
         } catch(error) {
             console.error(error);
-            alert('copy failed!!! ', error);
+            setNotifications({message:'copy failed', type:'success'})
         }
 
     }
     return (
-        <div className={'w-full m-auto sm:w-max bg-clr-200 shadow-lg rounded-2xl absolute top-1/2 mt-[-120px] left-0 sm:left-1/2 sm:ml-[-210px] ' + (displayStatus && ' animate-swipeup')}>
+        <div className={' bg-clr-200 shadow-lg rounded-2xl absolute top-1/2 mt-[-120px] left-0 sm:left-1/2 sm:ml-[-210px] ' + (displayStatus && ' animate-swipeup')}>
             {displayStatus && (
                 <div className='flex flex-col text-clr-300 p-6 '>
                     <div className='flex justify-between items-center border-b border-clr-100 pb-4'>
@@ -87,7 +89,7 @@ export default function ShareLinksModal({ displayStatus, setShareModalIsShowing,
                             <p className='text-sm'>Share this link via</p>
                             <div className="socialIcons flex gap-2">
                                 {socailItem.map((item, i) => <SocailIcon key={i} socialData={item} callBack={shareFunctions[i]} imageUrl={fileUrl} />)}
-                                <div className='h-0.5 bg-ntrl-400   m-auto flex-1'></div>
+                                {/* <div className='h-0.5 bg-ntrl-400   m-auto flex-1'></div> */}
                             </div>
                         </div>
                         <div className='flex flex-col gap-4'>

@@ -46,7 +46,7 @@ export default function ImageUploader({ setImageIsUploading, setUrlImageData, se
     return (
         <section className='relative overflow-hidden w-full m-auto sm:w-[540px] h-[332px] bg-clr-200 shadow-lg rounded-md p-2' onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}>
             {dragActive && (
-                <div className='absolute inset-2 rounded-sm bg-clr-300 flex flex-col gap-2 items-center justify-center'>
+                <div className='absolute inset-2 rounded-lg bg-clr-300 flex flex-col gap-2 items-center justify-center'>
                     <div className='plus-icon w-6 h-6 rounded-md bg-primary-200 flex items-center justify-center'>
                         <img src={plusIcon} alt='add icon' className='w-4 h-4'/>
                     </div>

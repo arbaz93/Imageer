@@ -2,7 +2,6 @@ import React from 'react'
 
 export default function SocailIcon({ socialData, callBack, imageUrl }) {
   const { name, icon, viewBox, css, link } = socialData;
-  console.log(imageUrl)
   return (
     <a className={`p-2 border rounded-[50%] duration-200 social-fill-white-hover cursor-pointer ` + css.css} onClick={() => { callBack(imageUrl)}} style={{borderColor: css.color}} alt={name}>
       {
