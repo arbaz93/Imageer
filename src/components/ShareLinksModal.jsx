@@ -66,18 +66,32 @@ export default function ShareLinksModal({ displayStatus, setShareModalIsShowing,
     }
     async function handleCopy() {
         const text = inputRef.current.value;
-
+    
+        if (!text) return;
+    
         try {
-            await navigator.clipboard.writeText(text);
-            setNotifications({message:'copied!!!', type:'success'})
-        } catch(error) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                await navigator.clipboard.writeText(text);
+            } else {
+                // fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.focus();
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+            }
+            setNotifications({ message: 'Copied link!!!', type: 'success' });
+        } catch (error) {
             console.error(error);
-            setNotifications({message:'copy failed', type:'success'})
+            setNotifications({ message: 'Copy failed', type: 'error' });
         }
-
     }
+    
+    
     return (
-        <div className={' bg-clr-200 shadow-lg rounded-2xl absolute top-1/2 mt-[-120px] left-0 sm:left-1/2 sm:ml-[-210px] ' + (displayStatus && ' animate-swipeup')}>
+        <div className={'w-full m-auto sm:w-max bg-clr-200 shadow-lg rounded-2xl absolute top-1/2 mt-[-120px] left-0 sm:left-1/2 sm:ml-[-210px] ' + (displayStatus && ' animate-swipeup')}>
             {displayStatus && (
                 <div className='flex flex-col text-clr-300 p-6 '>
                     <div className='flex justify-between items-center border-b border-clr-100 pb-4'>

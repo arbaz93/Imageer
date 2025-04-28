@@ -1,16 +1,19 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { linkIcon, downloadIcon, spinnerIcon } from '../utils/constants';
 import ShareLinksModal from './ShareLinksModal';
+import { useNotificationStore } from '../zustand/store';
+
 export default function ImageUploadSuccess({ urlImageData }) {
   const [isDownloading, setIsDownloading] = useState(false);
   const [shareModalisShowing, setShareModalIsShowing] = useState(false)
-
+  const setNotifications = useNotificationStore(state => state.setNotifications);
   function handleShare() {
     setShareModalIsShowing(!shareModalisShowing);
   }
   async function handleDownload() {
     try {
       setIsDownloading(true);
+      setNotifications({message: `starting download!`, type: 'success'});
 
       const response = await fetch(urlImageData.url, { mode: 'cors' });
       const blob = await response.blob();
@@ -30,8 +33,12 @@ export default function ImageUploadSuccess({ urlImageData }) {
       document.body.removeChild(a);
 
     } catch (err) {
+      setNotifications({message: `cannot download ${urlImageData?.original_filename ?? 'image!'}`, type: 'error'});
+
       console.error(err)
     } finally {
+      setNotifications({message: `downloading ${urlImageData?.original_filename ?? 'image!'}`, type: 'success'});
+
       setIsDownloading(false)
 
     }
