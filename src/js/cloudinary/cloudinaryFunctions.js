@@ -22,7 +22,7 @@ export async function uploadImageToCloudinary(data, onProgess) {
         return response;
     } catch (err) {
         console.error('something went wrong!!!', err)
-        return err;
+        return { success: false, err};
     }
 
 }

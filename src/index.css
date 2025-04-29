@@ -182,7 +182,8 @@ body {
 /* Social icons */
 .social-fill-white-hover:hover svg,
 .social-fill-white-hover:focus svg,
-.social-fill-white-hover:focus-within svg {
+.social-fill-white-hover:focus-within svg
+.social-fill-white-hover:active svg {
   fill: white;
 }
 /* Loading Bar */
