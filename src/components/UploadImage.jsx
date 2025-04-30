@@ -25,9 +25,6 @@ function UploadImage({ setImageIsUploading, setUrlImageData, setProgress, setLoa
         setImageIsUploading(true);
         uploadImageToCloudinary(imageData, (progressPercentage) => { setProgress(progressPercentage)})
             .then(async (res) => {
-                if(res.status != 200) {
-                    setNotifications({ message: 'something went wrong!', type: 'error' });
-                }
                 if(res.status == 200) {
                     setLoadingStatus('Processing image');
                     const req = await sendImageIdToServerForDeletionAfterMonth(res.data.public_id);

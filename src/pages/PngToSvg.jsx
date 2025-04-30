@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ImageUploader, FinalProduct, Loading } from '../components';
 
-export default function imageUploadPage() {
+export default function PngToSvg() {
   // const [file, setFile] = useState(null);
   const [urlImageData, setUrlImageData] = useState(null)
   const [imageIsUploading, setImageIsUploading] = useState(false);

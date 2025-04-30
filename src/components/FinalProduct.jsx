@@ -3,7 +3,7 @@ import { linkIcon, downloadIcon, spinnerIcon } from '../utils/constants';
 import ShareLinksModal from './ShareLinksModal';
 import { useNotificationStore } from '../zustand/store';
 
-export default function ImageUploadSuccess({ urlImageData }) {
+export default function FinalProduct({ urlImageData }) {
   const [isDownloading, setIsDownloading] = useState(false);
   const [shareModalisShowing, setShareModalIsShowing] = useState(false)
   const setNotifications = useNotificationStore(state => state.setNotifications);

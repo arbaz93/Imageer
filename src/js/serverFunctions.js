@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
-
 export async function sendImageIdToServerForDeletionAfterMonth(id) {
     const payload = {
         'id': id,
@@ -12,6 +11,6 @@ export async function sendImageIdToServerForDeletionAfterMonth(id) {
         return res;
     } catch(err) {
         console.error(err);
-        return res;
+        return {success: false, err};
     }
 }

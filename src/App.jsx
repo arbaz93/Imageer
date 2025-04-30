@@ -6,6 +6,7 @@ import { Navigation } from './components';
 import { ImageUploadPage } from './pages';
 import ErrorPage from './pages/ErrorPage';
 import NotificationPanel from './components/NotificationPanel';
+import PngToSvg from './pages/PngToSvg';
 
 export default function App() {
   // Read initial color scheme from localStorage or use 'light' as fallback
@@ -31,6 +32,7 @@ export default function App() {
             <ImageUploadPage />
             </>
              } />
+          <Route path="/png-to-svg" element={<PngToSvg />} />
           <Route path="/oops" element={<ErrorPage />} />
         </Routes>
         <NotificationPanel colorScheme={colorScheme} />
