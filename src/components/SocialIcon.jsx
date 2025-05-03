@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function SocailIcon({ socialData, callBack, imageUrl }) {
+export default function SocialIcon({ socialData, callBack, imageUrl }) {
   const { name, icon, viewBox, css, link } = socialData;
   const colorScheme = localStorage.getItem('imageerColorScheme');
   return (

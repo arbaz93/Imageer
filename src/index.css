@@ -33,6 +33,7 @@
   --text-clr-100:#121826;
   --text-clr-200:#212936;
   --text-clr-300:#4D5562;
+  --text-clr-400:#F9FAFB;
 
   --fill-clr-100:#4D5562;
 
@@ -63,6 +64,7 @@ html.dark {
   --text-clr-100:#E5E7EB;
   --text-clr-200:#212936;
   --text-clr-300:#F9FAFB;
+  --text-clr-400:#F9FAFB;
 
   --fill-clr-100:#f9fafb;
 
@@ -77,7 +79,9 @@ body {
   min-height: 100vh;
   font-size: 14px;
 }
-
+button {
+  cursor: pointer;
+}
 .wrapper {
   max-width: 1140px;    /* Keeps content from stretching too wide */
   margin: 0 auto;        /* Centers the container horizontally */
@@ -164,6 +168,9 @@ body {
 .border-clr-100 {
   border-color: var(--ntrl-clr-400);
 }
+.outline-clr-100 {
+  outline-color: var(--ntrl-clr-400);
+}
 
 /* Fill Colors */
 .fill-clr-100 {
@@ -177,6 +184,46 @@ body {
 .bg-primary-200-hover:hover,
 .bg-primary-200-hover:focus {
   background-color: var(--primary-clr-200);
+}
+
+/* Grids */
+.special-grid-100 {
+  display: grid;
+  grid-template-columns: 40ch 1fr min-content 1fr 1fr;
+  justify-items: end;
+  font-weight: 300;
+}
+.special-grid-100 > *:nth-child(1) {
+  justify-self: start;
+}
+@media (max-width: 740px) {
+  .special-grid-100 {
+    grid-template-columns: 1fr 1fr 1fr;
+    row-gap: 1rem;
+  }
+  .special-grid-100 > *:nth-child(1) {
+    grid-column: 1;
+  }
+  .special-grid-100 > *:nth-child(2) {
+    grid-column: 3;
+    grid-row: 2;
+  }
+  .special-grid-100 > *:nth-child(3) {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: start;
+  }
+  .special-grid-100 > *:nth-child(4) {
+    grid-column: 1;
+    grid-row: 2;
+    margin-left: 4rem;
+    justify-self: start;
+
+  }
+  .special-grid-100 > *:nth-child(5) {
+    grid-column: 3;
+    grid-row: 1;
+  }
 }
 
 /* Social icons */

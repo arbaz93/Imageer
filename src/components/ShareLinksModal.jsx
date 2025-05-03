@@ -1,9 +1,9 @@
 import { useState, useRef } from 'react'
-import { crossIcon, linkIcon } from '../utils/constants'
+import { crossIcon } from '../utils/constants'
 import {shareFunctions} from '../js/socialShare';
 import { useNotificationStore } from '../zustand/store';
+import { SocialIcon } from './'
 
-import SocailIcon from './SocailIcon'
 export default function ShareLinksModal({ displayStatus, setShareModalIsShowing, fileUrl }) {
     const [inputIsFocused, setInputIsFocused] = useState(false);
     const inputRef = useRef(null);
@@ -102,7 +102,7 @@ export default function ShareLinksModal({ displayStatus, setShareModalIsShowing,
                         <div className='flex flex-col gap-4'>
                             <p className='text-sm'>Share this link via</p>
                             <div className="socialIcons flex gap-2">
-                                {socailItem.map((item, i) => <SocailIcon key={i} socialData={item} callBack={shareFunctions[i]} imageUrl={fileUrl} />)}
+                                {socailItem.map((item, i) => <SocialIcon key={i} socialData={item} callBack={shareFunctions[i]} imageUrl={fileUrl} />)}
                                 {/* <div className='h-0.5 bg-ntrl-400   m-auto flex-1'></div> */}
                             </div>
                         </div>

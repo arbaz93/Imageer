@@ -1,1 +1,4 @@
-export { default as ImageUploadPage } from './imageUploadPage'
+export { default as ImageUploadPage } from './ImageUploadPage'
+export { default as HomePage } from './HomePage'
+export { default as PngToSvgPage } from './PngToSvgPage'
+export { default as ErrorPage } from './ErrorPage'
