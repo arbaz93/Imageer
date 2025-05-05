@@ -79,7 +79,44 @@
 ```
 ---
 
-## 🧪 Scripts
+## 📝 Environment Variables
+
+Ensure that the following environment variables are set in your `.env` file for proper configuration:
+
+```
+# 🌩️ Cloudinary Configuration
+VITE_CLOUD_NAME=<cloudinary-cloud-name>
+VITE_BASE_URL='https://api.cloudinary.com/v1_1'
+VITE_UNSIGNED_PRESET_NAME=<cloudinary-unsigned-preset-name>
+
+# 🔗 Backend Server
+VITE_SERVER_URL='http://localhost:3000'
+
+
+```
+
+
+---
+## 🕹️ Setting up frontend Locally
+
+To run the imageer frontend locally:
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/arbaz93/Imageer.git
+2. Install dependencies:
+    ```bash
+    npm install
+3. Set up your environment variables in a .env file (based on the example above).
+4. Setup cloudinary account | note: see https://cloudinary.com/documentation for more information.
+
+5. Setup backend server by following the instructions at https://github.com/arbaz93/Imageer-backend
+
+6. Start development server
+    ```bash
+    npm run dev
+    ```
 
 ### Frontend
 
