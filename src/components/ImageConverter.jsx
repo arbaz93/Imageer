@@ -2,25 +2,27 @@ import React, { useEffect, useState, useRef } from 'react'
 import ConvertFile from './ConvertFile';
 import { nanoid } from 'nanoid';
 import conversionFormats from '../utils/conversionFormats';
-import { arrowRight } from '../utils/constants';
-import { validateImageForConversion } from '../js/image-conversion/imageConversion';
+import { validateImagesForConversion, sendImagesForConversion } from '../js/image-conversion/imageConversion';
+import { useNotificationStore } from '../zustand/store'
 
-export default function ImageConverter() {
-    const [convertingStatus, setConvertingStatus] = useState(null);
+export default function ImageConverter({ setConvertedFiles, setConvertingStatus, setConversionStatusPercentage }) {
     const [files, setFiles] = useState([]);
     const [filesStatus, setFilesStatus] = useState({});
     const inputRef = useRef(null);
     const formatRef = useRef(null);
+    const setNotifications = useNotificationStore(state => state.setNotifications);
+    
 
     function openFileBrowser() {
         inputRef.current.click();
     }
     function handleFile(e) {
-        const id = nanoid();
         const inFiles = Array.from(e.target.files);
 
         const newFilesWithIds = inFiles.map(file => {
+            const id = nanoid();
             file.id = id
+            
             return file;
         });
         setFiles(prevFiles => [...prevFiles, ...newFilesWithIds])
@@ -36,31 +38,68 @@ export default function ImageConverter() {
             })
             return updatedFiles;
         })
+    
     }
-
 
     async function handleConversion() {
-        const result = files.some(file => {
-            if (!file.convertTo || file.convertTo == '...') return;
-            const imageIsValid = conversionFormats.some(type => {
-                const lowercaseT = `image/${type.toLowerCase()}`;
-                console.log(lowercaseT == file.type)
-                if (lowercaseT == file.type) return true;
-                return false;
-            })
-            return !imageIsValid;
-        })
-        console.log(result)
-    }
-    useEffect(() => {
-        console.log(files)
+        if (!files || files.length === 0) {
+            setNotifications({ message: 'No image detected!', type: 'error' })
+            return;
+        }
 
+
+        // Handle Images validation
+        const isValid = validateImagesForConversion(files);
+        if (!isValid.bool) {
+            setNotifications({ message: isValid.message, type: 'error' })
+            return
+        }
+        setNotifications({ message: isValid.message, type: 'success' })
+
+
+
+
+        // Sending files to server for conversion
+        setNotifications({ message: 'Uploading files for conversion', type: 'success' });
+        setConvertingStatus('converting');
+        
+        // Send images for conversion to server
+        const res = await sendImagesForConversion(files, setConversionStatusPercentage);
+ 
+        // Handle error from server
+        if (!res.success) {
+            setConvertingStatus('error');
+
+            setNotifications({ message: 'Something went wrong!!!', type: 'error' });
+            return res.error;
+        }
+
+        // Handle success from server
+        setConvertingStatus('success');
+        setNotifications({ message: 'Images converted successfully!!!', type: 'success' });
+        setConvertedFiles(prevFiles => [...prevFiles, ...res.convertedFiles]);
+    }
+
+    function handleFileStatus() {
+        const statuses = {};
+        files.forEach(file => {
+            if(!file?.convertTo || file?.convertTo === '...') {
+                statuses[file.id] = false;
+            } else {
+                statuses[file.id] = true;
+            }
+        });
+        setFilesStatus(statuses);
+    }
+
+    useEffect(() => {
+        handleFileStatus();
     }, [files])
     return (
         <div className=' max-w-5xl w-full shadow-2xl rounded-lg overflow-hidden'>
-            <div className={'shadow-md bg-clr-200 rounded-md'}>
-                <input ref={inputRef} type='file' onChange={handleFile} className='hidden text-clr-100 text-2xl' placeholder='Input' id='convert-files' />
-                {files.map((file, i) => <ConvertFile setFiles={setFiles} file={file} key={i} />)}
+            <div className={'shadow-md bg-clr-200 rounded-md max-h-[40vh] overflow-auto'}>
+                <input ref={inputRef} multiple max={10} maxLength={10} type='file' onChange={handleFile} className='hidden text-clr-100 text-2xl' placeholder='Input' id='convert-files' />
+                {files.map((file, i) => <ConvertFile setFiles={setFiles} fileStatus={filesStatus[file.id]} file={file} key={i} />)}
             </div>
             <div className='flex items-center justify-center gap-2 py-4'>
                 <span onClick={handleSelectAllButton} className='text-clr-100'>Convert all to:</span>

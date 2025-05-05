@@ -3,9 +3,11 @@ import { create } from 'zustand';
 export const useNotificationStore = create((set, get) => ({
   notifications: [],
 
+  // Notifications template...
+  // timestamp is added automatically
+  // setNotifications({ message: `some message`, type: 'error || success' });
   setNotifications: (newNotification) => {
     const n = {...newNotification, timestamp: Date.now()}
-    console.log(n.timestamp)
     set((state) => ({
       notifications: [...state.notifications, n]
     }));

@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 // Components
 import { Navigation, NotificationPanel} from './components';
 // Pages
-import { HomePage, ImageUploadPage, PngToSvgPage, ErrorPage} from './pages';
+import { HomePage, ImageUploadPage, ImageFormatConvertPage, ErrorPage} from './pages';
 
 export default function App() {
   // Read initial color scheme from localStorage or use 'light' as fallback
@@ -26,7 +26,7 @@ export default function App() {
         <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/image-upload" element={<ImageUploadPage />} />
-        <Route path="/png-to-svg" element={<PngToSvgPage />} />
+        <Route path="/image-format-convert" element={<ImageFormatConvertPage />} />
           <Route path="/oops" element={<ErrorPage />} />
         </Routes>
         <NotificationPanel colorScheme={colorScheme} />

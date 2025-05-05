@@ -125,4 +125,4 @@ Let me know if you'd like to include setup instructions for local development or
 ---
 
 **Author**: Yousaf Arbaz  
-**Backend Service**: `https://github.com/arbaz93/Imageer-backend`
+**Backend Repo**: `https://github.com/arbaz93/Imageer-backend`

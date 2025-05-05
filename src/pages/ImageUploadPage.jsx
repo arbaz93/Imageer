@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ImageUploader, FinalProduct, Loading, PageHeading } from '../components';
+import { ImageUploader, FinalUpload, Loading } from '../components';
 
 export default function ImageUploadPage() {
   // const [file, setFile] = useState(null);
@@ -14,7 +14,7 @@ export default function ImageUploadPage() {
         
         {
           urlImageData ? 
-            <FinalProduct urlImageData={urlImageData} /> :
+            <FinalUpload urlImageData={urlImageData} /> :
               !imageIsUploading ? 
               <ImageUploader setImageIsUploading={setImageIsUploading} setUrlImageData={setUrlImageData} setProgress={setProgress} setLoadingStatus={setLoadingStatus}/> :
               <Loading text={loadingStatus} progress={progress}/>

@@ -3,7 +3,7 @@ import { linkIcon, downloadIcon, spinnerIcon } from '../utils/constants';
 import { ShareLinksModal, PageHeading } from './';
 import { useNotificationStore } from '../zustand/store';
 
-export default function FinalProduct({ urlImageData }) {
+export default function FinalUpload({ urlImageData }) {
   const [isDownloading, setIsDownloading] = useState(false);
   const [shareModalisShowing, setShareModalIsShowing] = useState(false)
   const setNotifications = useNotificationStore(state => state.setNotifications);
@@ -46,7 +46,7 @@ export default function FinalProduct({ urlImageData }) {
 
   return (
     <>
-      <PageHeading heading={'Image uploaded!'} description={'Note: Uploaded image will be deleted after 30days!'} />
+      <PageHeading heading={'Image uploaded!'} description={'Note: Uploaded image will be deleted after 30 days!'} />
       <section className='w-full m-auto sm:w-[540px] h-[332px] bg-clr-200 shadow-lg rounded-md p-2 flex flex-col items-center justify-center gap-8' >
         <div className='h-full rounded-lg object-fit overflow-hidden'>
           <img src={urlImageData?.url} className='w-full h-full object-cover rounded-lg ' alt={urlImageData?.original_filename || ''} />
