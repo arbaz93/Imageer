@@ -46,7 +46,7 @@ export default function ImageUploader({ setImageIsUploading, setUrlImageData, se
     }
     return (
         <>
-            <PageHeading heading={'Image Upload'} description={'Upload image to cloud'} />
+            <PageHeading heading={'Online Image Uploader'} description={'Upload image to cloud for downloading and sharing.'} />
             <section className='relative overflow-hidden w-full m-auto sm:w-[540px] h-[332px] bg-clr-200 shadow-lg rounded-md p-2' onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}>
                 {dragActive && (
                     <div className='absolute inset-2 rounded-lg bg-clr-300 flex flex-col gap-2 items-center justify-center'>
