@@ -24,7 +24,7 @@ export default function App() {
       <main className="relative min-h-svh" >
         <Navigation colorScheme={colorScheme} setColorScheme={setColorScheme} />
         <Routes>
-        <Route path="/" element={<ImageUploadPage />} />
+        <Route path="/" element={<ImageFormatConvertPage />} />
         <Route path="/upload-image" element={<ImageUploadPage />} />
         <Route path="/convert-image" element={<ImageFormatConvertPage />} />
           <Route path="/oops" element={<ErrorPage />} />
