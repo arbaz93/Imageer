@@ -14,7 +14,6 @@ export async function sendImagesForConversion(files, progress) {
         const config = {
             onUploadProgress: (progressEvent) => {
                 const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                console.log(percent)
                 progress(percent);
             }
         };
@@ -27,12 +26,10 @@ export async function sendImagesForConversion(files, progress) {
 
             return blob;
         })
-        console.log(res)
 
         // const imgUrls = blobs.map(blob => URL.createObjectURL(blob));
 
-        const convertedFiles = blobs.map((blob, i) => ({ url: URL.createObjectURL(blob), filename: filenames[i],  size: blob.size}));
-        console.log(convertedFiles)
+        const convertedFiles = blobs.map((blob, i) => ({ url: URL.createObjectURL(blob), filename: filenames[i],  size: blob.size, format: formats[i]}));
         return { success: true, convertedFiles };
     } catch (err) {
         console.error(err)

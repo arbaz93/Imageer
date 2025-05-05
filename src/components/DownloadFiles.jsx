@@ -1,7 +1,7 @@
 import { imageFormat } from '../utils/constants'
 import { formatBytes } from '../utils/miscFunctions'
 
-export default function DownloadFiles({ file }) {
+export default function DownloadFiles({ file, downloadSingleFile }) {
 
 
     return (
@@ -14,7 +14,7 @@ export default function DownloadFiles({ file }) {
             <span className='mx-2 border border-green-500 text-green-500 uppercase text-[9px] rounded-xs px-[4px] align-middle whitespace-nowrap '>{'ready'}</span>
             <p className=' text-xs text-clr-300 opacity-80 '>{formatBytes(file?.size)}</p>
 
-            <button onClick={() => DownloadAllFiles()} className='group text-center flex items-center justify-between bg-primary-100 hover:opacity-40 duration-200 h-full w-full max-w-[10rem]  px-6 py-4 sm:py-0' >
+            <button onClick={() => downloadSingleFile(file)} className='group text-center flex items-center justify-between bg-primary-100 hover:opacity-40 duration-200 h-full w-full max-w-[10rem]  px-6 py-4 sm:py-0' >
                 <span className='font-bold text-md text-clr-400 text-center w-full'>Download</span>
             </button>
         </div>
