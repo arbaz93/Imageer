@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { ImageUploader, FinalUpload, Loading } from '../components';
 
 export default function ImageUploadPage() {
-  // const [file, setFile] = useState(null);
   const [urlImageData, setUrlImageData] = useState(null)
   const [imageIsUploading, setImageIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);

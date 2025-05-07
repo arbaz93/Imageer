@@ -2,13 +2,12 @@ import React, { useEffect, useState, useRef } from 'react'
 import ConvertFile from './ConvertFile';
 import { nanoid } from 'nanoid';
 import conversionFormats from '../utils/conversionFormats';
-import { validateImagesForConversion, sendImagesForConversion } from '../js/image-conversion/imageConversion';
+import { validateImagesForConversion, sendAnImageForConversion } from '../js/image-conversion/imageConversion';
 import { useNotificationStore } from '../zustand/store'
 import { PageHeading } from './';
 
-export default function ImageConverter({ setConvertedFiles, setConvertingStatus, setConversionStatusPercentage }) {
+export default function ImageConverter({ setConvertedFiles, setConvertingStatus, setFilesStatus, filesStatus }) {
     const [files, setFiles] = useState([]);
-    const [filesStatus, setFilesStatus] = useState({});
     const inputRef = useRef(null);
     const formatRef = useRef(null);
     const setNotifications = useNotificationStore(state => state.setNotifications);
@@ -60,56 +59,115 @@ export default function ImageConverter({ setConvertedFiles, setConvertingStatus,
 
 
 
+        // set files status to waiting/queue
+        files.forEach(file => {
+            const status = 'waiting';
+            const id = file.id;
+
+            setFilesStatus(prev => ({
+                ...prev,
+                [id]: {
+                    ...(prev[id] || {}),
+                    convertingStatus: status,
+                }
+            }));
+        });
         // Sending files to server for conversion
         setNotifications({ message: 'Uploading files for conversion', type: 'success' });
         setConvertingStatus('converting');
 
+        // Set Templates for FinalUpload component
+        setConvertedFiles(files.map(file => ({id: file?.id,url: null, filename: file?.name, size: '0'})))
         // Send images for conversion to server
-        const res = await sendImagesForConversion(files, setConversionStatusPercentage);
-
-        // Handle error from server
-        if (!res.success) {
-            setConvertingStatus('error');
-
-            setNotifications({ message: 'Something went wrong!!!', type: 'error' });
-            return res.error;
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const res = await sendAnImageForConversion(file, (prog) => trackFileProgress(file.id, prog));
+        
+            if (!res.success) {
+                setConvertingStatus('error');
+                setNotifications({ message: 'Something went wrong!!!', type: 'error' });
+                setFilesStatus(prev => ({
+                    ...prev,
+                    [file.id]: {
+                        ...(prev[file.id] || {}),
+                        convertingStatus: 'error',
+                        progress: 0
+                    }
+                }));
+                continue;
+            }
+            setFilesStatus(prev => ({
+                ...prev,
+                [file.id]: {
+                    ...(prev[file.id] || {}),
+                    convertingStatus: 'finished',
+                    progress: 100
+                }
+            }));
+            setConvertedFiles(prevFiles => {
+                const updated = [...prevFiles];
+                updated[i] = {
+                    id: file.id,
+                    url: res.convertedFile.url,
+                    filename: res.convertedFile.filename,
+                    size: res.convertedFile.size,
+                    format: res.convertedFile.format
+                };
+                return updated;
+            });
+            
         }
+
 
         // Handle success from server
         setConvertingStatus('success');
         setNotifications({ message: 'Images converted successfully!!!', type: 'success' });
         setFiles([]);
-        setFilesStatus({});
-        setConvertedFiles(prevFiles => [...prevFiles, ...res.convertedFiles]);
     }
 
     function handleFileStatus() {
-        const statuses = {};
         files.forEach(file => {
-            if (!file?.convertTo || file?.convertTo === '...') {
-                statuses[file.id] = false;
-            } else {
-                statuses[file.id] = true;
-            }
+            const status = (!file?.convertTo || file?.convertTo === '...') ? 'waiting' : 'ready';
+            const id = file.id;
+
+            setFilesStatus(prev => ({
+                ...prev,
+                [id]: {
+                    ...(prev[id] || {}),
+                    convertingStatus: status,
+                }
+            }));
         });
-        setFilesStatus(statuses);
+    }
+
+
+    function trackFileProgress(id, progress) {
+        setFilesStatus(prev => ({
+            ...prev,
+            [id]: {
+                ...(prev[id] || {}),
+                convertingStatus: 'converting',
+                progress
+            }
+        }));
     }
 
     useEffect(() => {
         handleFileStatus();
     }, [files])
+    
     return (
         <>
             <PageHeading heading={'Online Image Converter'} description={'Convert your images to any format'} />
             <div className=' max-w-5xl w-full shadow-2xl rounded-lg overflow-hidden'>
                 <div className={'shadow-md bg-clr-200 rounded-md max-h-[40vh] overflow-auto'}>
                     <input ref={inputRef} multiple max={10} maxLength={10} type='file' onChange={handleFile} className='hidden text-clr-100 text-2xl' placeholder='Input' id='convert-files' />
-                    {files.map((file, i) => <ConvertFile setFiles={setFiles} fileStatus={filesStatus[file.id]} file={file} key={i} />)}
+                    {files.map((file, i) => <ConvertFile trackFileProgress={trackFileProgress} setFiles={setFiles} fileStatus={filesStatus[file.id]} file={file} key={i} />)}
                 </div>
                 <div className='flex items-center justify-center gap-2 py-4'>
                     <span onClick={handleSelectAllButton} className='text-clr-100'>Convert all to:</span>
                     <select ref={formatRef} onChange={handleSelectAllButton} defaultValue={'...'} className='rounded-sm text-clr-100 px-1.5 py-1.5 outline outline-clr-100 focus:outline-2 focus-within:outline-2'>
-                        {conversionFormats.map((format, i) => <option key={i} className='px-1.5 py-2'>{format}</option>)}
+                        {conversionFormats.map((format, i) => <option key={i} className='px-1.5 py-2 text-clr-100'>{format}</option>)}
                     </select>
                 </div>
                 <div>

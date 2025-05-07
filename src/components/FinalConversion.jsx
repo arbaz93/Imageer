@@ -1,7 +1,7 @@
 import { DownloadFiles, PageHeading } from './';
 import { useNotificationStore } from '../zustand/store'
 
-export default function FinalConversion({ files, setConvertingStatus, setConvertedFiles }) {
+export default function FinalConversion({ filesStatus, setFilesStatus, files, setConvertingStatus, setConvertedFiles }) {
     const setNotifications = useNotificationStore(state => state.setNotifications);
 
     function downloadSingleFile(file) {
@@ -16,6 +16,27 @@ export default function FinalConversion({ files, setConvertingStatus, setConvert
     }
 
     function downloadAllFiles() {
+        const filesAreReady = Object.keys(filesStatus).every(fId => filesStatus[fId].convertingStatus === 'finished');
+
+        files.forEach((file, index) => {
+            console.log(filesStatus[file.id]?.convertingStatus)
+            if (filesStatus[file.id]?.convertingStatus == 'finished') {
+                setNotifications({ message: 'download starting!', type: 'success' });
+                const delay = 500; // milliseconds between each download
+
+                setTimeout(() => {
+                    const a = document.createElement('a');
+                    a.download = file.filename || `image_${Date.now()}.${file.format}`;
+                    a.href = file.url;
+
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                }, index * delay);
+            }
+        })
+
+        if(!filesAreReady) return;
         setNotifications({ message: 'download starting!', type: 'success' })
         const delay = 500; // milliseconds between each download
 
@@ -30,6 +51,7 @@ export default function FinalConversion({ files, setConvertingStatus, setConvert
                 document.body.removeChild(a);
             }, index * delay);
         });
+        setFilesStatus({})
     }
 
     function convertMoreFiles() {
@@ -42,7 +64,7 @@ export default function FinalConversion({ files, setConvertingStatus, setConvert
 
             <div className=' max-w-5xl w-full shadow-2xl rounded-lg overflow-hidden'>
                 <div className={'shadow-md bg-clr-200 rounded-md max-h-[40vh] overflow-auto'}>
-                    {files.map((file, i) => <DownloadFiles file={file} key={i} downloadSingleFile={downloadSingleFile} />)}
+                    {files.map((file, i) => <DownloadFiles file={file} filesStatus={filesStatus[file?.id]} key={i} downloadSingleFile={downloadSingleFile} />)}
                 </div>
                 <div className='flex items-center justify-center gap-2 py-4'>
 

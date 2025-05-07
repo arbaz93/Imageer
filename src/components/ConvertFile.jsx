@@ -6,7 +6,6 @@ import { setImageFormatTo, removeImageFromFiles } from '../js/image-conversion/i
 
 export default function ConvertFile({ setFiles, file, fileStatus }) {
 
-
     return (
         <div className='special-grid-100 items-center justify-between px-4 py-2 border-b border-clr-100'>
             <div className='flex-1 flex items-center gap-2 overflow-ellipsis max-w-[40ch]'>
@@ -21,7 +20,7 @@ export default function ConvertFile({ setFiles, file, fileStatus }) {
                     </select>
                 </div>
             </div>
-            <span className={'mx-2 border  uppercase text-[9px] rounded-xs px-[4px] align-middle whitespace-nowrap ' + ((fileStatus) ? ' border-green-500 text-green-500 ' : ' border-orange-500 text-orange-500 ')}>{(fileStatus) ? 'ready' : 'waiting'}</span>
+            <span className={'mx-2 border  uppercase text-[9px] rounded-xs px-[4px] align-middle whitespace-nowrap ' + ((fileStatus?.convertingStatus == 'ready') ? ' border-green-500 text-green-500 ' : ' border-orange-500 text-orange-500 ')}>{fileStatus?.convertingStatus ?? 'waiting'}</span>
             <p className=' text-xs text-clr-300 opacity-80'>{formatBytes(file?.size)}</p>
 
             <button onClick={() => removeImageFromFiles(file.id, setFiles)} className=''>{<img src={crossIcon} alt='romove' className='cursor-pointer w-6 opacity-40 hover:opacity-80 focus:opacity-80 duration-200' />}</button>

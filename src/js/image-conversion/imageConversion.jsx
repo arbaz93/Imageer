@@ -2,6 +2,8 @@ import axios from "axios";
 import conversionFormats from "../../utils/conversionFormats";
 import { base64ToArrayBuffer } from '../../utils/miscFunctions';
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+
+
 export async function sendImagesForConversion(files, progress) {
     if (!files || files.length === 0) return;
     const formData = new FormData();
@@ -17,7 +19,7 @@ export async function sendImagesForConversion(files, progress) {
                 progress(percent);
             }
         };
-    
+
         const res = await axios.post(`${SERVER_URL}/api/convert-images`, formData, config)
         const { base64Buffers, filenames, formats } = res.data;
         const blobs = base64Buffers.map((base64, i) => {
@@ -29,7 +31,7 @@ export async function sendImagesForConversion(files, progress) {
 
         // const imgUrls = blobs.map(blob => URL.createObjectURL(blob));
 
-        const convertedFiles = blobs.map((blob, i) => ({ url: URL.createObjectURL(blob), filename: filenames[i],  size: blob.size, format: formats[i]}));
+        const convertedFiles = blobs.map((blob, i) => ({ url: URL.createObjectURL(blob), filename: filenames[i], size: blob.size, format: formats[i] }));
         return { success: true, convertedFiles };
     } catch (err) {
         console.error(err)
@@ -38,6 +40,40 @@ export async function sendImagesForConversion(files, progress) {
 
 }
 
+export async function sendAnImageForConversion(file, progress) {
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('images', file); // 'images' is the field name your backend expects
+    formData.append('convertTo[]', file.convertTo);
+
+    try {
+        // Track progress
+        const options = {
+            onUploadProgress: (progressEvent) => {
+                const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                progress(percent);
+            }
+        };
+
+        const res = await axios.post(`${SERVER_URL}/api/convert-images`, formData, options)
+        const { base64Buffers, filenames, formats } = res.data;
+        const blobs = base64Buffers.map((base64, i) => {
+            // convert base64 to array buffer so i can create blob
+            const arrBuffer = base64ToArrayBuffer(base64);
+            const blob = new Blob([arrBuffer], { type: `image/${formats[i]}` })
+
+            return blob;
+        })
+
+        const convertedFile = blobs.map((blob, i) => ({ url: URL.createObjectURL(blob), filename: filenames[i], size: blob.size, format: formats[i] }));
+        return { success: true, convertedFile: convertedFile[0] };
+    } catch (err) {
+        console.error(err)
+        return { success: false, error: err };;
+    }
+
+}
 export function validateImagesForConversion(files) {
     const validExtensions = conversionFormats
         .map(f => f.toLowerCase())
