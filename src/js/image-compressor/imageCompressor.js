@@ -7,15 +7,18 @@ const browserImageCompressionValidFormats = [
     { name:'webp', mimeType: 'image/webp' },
     { name:'gif', mimeType: 'image/gif' }
 ]
-export async function compressImage(file, maxSize = 3, useWebWorker = true) {
+export async function compressImage(file, progress) {
     const ext = fileExtension(file.name);
     const formatIsValid = browserImageCompressionValidFormats.some(ex => ex.name == ext);
     if(!formatIsValid) return { type: 'error', message: 'format not supported for compression.'};
     
     const options = {
-        maxSizeMB: maxSize,
+        maxSizeMB: 4,
         fileType: file.type,
-        useWebWorker
+        useWebWorker: true,
+        onProgress: (prog) => {
+            progress(prog);
+        }
     }
     try {
         const compressedBlob = await imageCompression(file, options);

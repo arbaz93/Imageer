@@ -20,4 +20,4 @@ export const maxImageConverterUploadSize = 10485760; // 10MB
 export const maxFilesAllowedForConversion = 10;
 
 // Compress image when size is greater than ↓.
-export const compressionStartSize = 3145728; // 3MB
+export const compressionStartSize = 4194304; // 4MB

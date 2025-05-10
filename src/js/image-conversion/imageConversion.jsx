@@ -52,6 +52,7 @@ export async function sendAnImageForConversion(file, progress) {
         const options = {
             onUploadProgress: (progressEvent) => {
                 const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                
                 progress(percent);
             }
         };

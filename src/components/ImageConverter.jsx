@@ -6,7 +6,7 @@ import { validateImagesForConversion, sendAnImageForConversion } from '../js/ima
 import { useColorSchemeStore, useNotificationStore } from '../zustand/store'
 import { PageHeading } from './';
 import { formatBytes } from '../utils/miscFunctions';
-import { compressionStartSize, maxImageConverterUploadSize } from '../utils/constants';
+import { compressionStartSize, maxImageConverterUploadSize, maxFilesAllowedForConversion } from '../utils/constants';
 import { compressImage } from '../js/image-compressor/imageCompressor';
 
 export default function ImageConverter({ setConvertedFiles, setConvertingStatus, setFilesStatus, filesStatus }) {
@@ -20,12 +20,18 @@ export default function ImageConverter({ setConvertedFiles, setConvertingStatus,
         inputRef.current.click();
     }
     function handleFile(e) {
+
         const inFiles = Array.from(e.target.files);
+        if (files.length + inFiles.length > maxFilesAllowedForConversion) {
+            setNotifications({ message: `Only ${maxFilesAllowedForConversion} images are allowed at a time for conversion.`, type: 'error' })
+            return false;
+        }
         const newFilesWithIds = inFiles.map(file => {
-            if(file.size > maxImageConverterUploadSize) {
-                setNotifications({ message: `${file.name} size is more than ${formatBytes(maxImageConverterUploadSize, 0)}.`, type: 'error'})
+            if (file.size > maxImageConverterUploadSize) {
+                setNotifications({ message: `${file.name} size is more than ${formatBytes(maxImageConverterUploadSize, 0)}.`, type: 'error' })
                 return false;
             }
+
             const id = nanoid();
             file.id = id
 
@@ -53,74 +59,46 @@ export default function ImageConverter({ setConvertedFiles, setConvertingStatus,
             setNotifications({ message: 'No image detected!', type: 'error' })
             return;
         }
-
-
         // Handle Images validation
         const isValid = validateImagesForConversion(files);
         if (!isValid.bool) {
             setNotifications({ message: isValid.message, type: 'error' })
             return
         }
-        setNotifications({ message: isValid.message, type: 'success' })
-
-
-
 
         // set files status to waiting/queue
         files.forEach(file => {
-            const status = 'waiting';
             const id = file.id;
-
-            setFilesStatus(prev => ({
-                ...prev,
-                [id]: {
-                    ...(prev[id] || {}),
-                    convertingStatus: status,
-                }
-            }));
+            handleFileStatus(id, { convertingStatus: 'waiting'})
         });
+        
         // Sending files to server for conversion
         setNotifications({ message: 'Uploading files for conversion', type: 'success' });
         setConvertingStatus('converting');
 
-        // Set Templates for FinalUpload component
-        setConvertedFiles(files.map(file => ({id: file?.id,url: null, filename: file?.name, size: '0'})))
+        // Set empty files as a placeholder for FinalUpload.jsx component
+        setConvertedFiles(files.map(file => ({ id: file?.id, url: null, filename: file?.name, size: '0' })))
         // Send images for conversion to server
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
 
-            // Compress image to increase performance
+            // Compress image when size > 4MB
             let compressedFile = null;
-            if(file.size > compressionStartSize) {
-                console.log('compressing')
-                compressedFile = await compressImage(file);
+            if (file.size > compressionStartSize) {
+                handleFileStatus(file.id, { convertingStatus: 'compressing' })
+                compressedFile = await compressImage(file, (prog) => trackCompressionProgress(file.id, prog));
                 compressedFile.convertTo = file.convertTo;
-
             }
-            console.log(file.size)
-            const res = await sendAnImageForConversion(compressedFile ?? file, (prog) => trackFileProgress(file.id, prog));
-        
+            const res = await sendAnImageForConversion(compressedFile ?? file, (prog) => trackUploadProgress(file.id, prog));
+
             if (!res.success) {
                 setConvertingStatus('error');
                 setNotifications({ message: 'Something went wrong!!!', type: 'error' });
-                setFilesStatus(prev => ({
-                    ...prev,
-                    [file.id]: {
-                        ...(prev[file.id] || {}),
-                        convertingStatus: 'error',
-                        progress: 0
-                    }
-                }));
+                handleFileStatus(file.id, { convertingStatus: 'error'})
                 continue;
             }
-            setFilesStatus(prev => ({
-                ...prev,
-                [file.id]: {
-                    ...(prev[file.id] || {}),
-                    convertingStatus: 'finished',
-                    progress: 100
-                }
-            }));
+            
+            handleFileStatus(file.id, { convertingStatus: 'finished'})
             setConvertedFiles(prevFiles => {
                 const updated = [...prevFiles];
                 updated[i] = {
@@ -132,7 +110,7 @@ export default function ImageConverter({ setConvertedFiles, setConvertingStatus,
                 };
                 return updated;
             });
-            
+
         }
 
 
@@ -142,43 +120,46 @@ export default function ImageConverter({ setConvertedFiles, setConvertingStatus,
         setFiles([]);
     }
 
-    function handleFileStatus() {
-        files.forEach(file => {
-            const status = (!file?.convertTo || file?.convertTo === '...') ? 'waiting' : 'ready';
-            const id = file.id;
 
-            setFilesStatus(prev => ({
-                ...prev,
-                [id]: {
-                    ...(prev[id] || {}),
-                    convertingStatus: status,
-                }
-            }));
-        });
+
+
+    // set progress status mid upload to server
+    function trackUploadProgress(id, progress ) {
+        const status = progress === 100 ? 'converting' : 'uploading'
+        handleFileStatus(id, { progress, convertingStatus: status })
+    }
+    function trackCompressionProgress(id, progress ) {
+        handleFileStatus(id, { progress, convertingStatus: 'compressing' })
     }
 
-
-    function trackFileProgress(id, progress) {
+    // Basic Function to update file status
+    function handleFileStatus(id, updates) {
         setFilesStatus(prev => ({
             ...prev,
             [id]: {
                 ...(prev[id] || {}),
-                convertingStatus: (progress == 100) ? 'converting' : 'uploading',
-                progress
+                ...updates
             }
-        }));
+        }))
     }
     useEffect(() => {
-        handleFileStatus();
+        function updateFileStatus() {
+            files.forEach(file => {
+                const status = (!file?.convertTo || file?.convertTo === '...') ? 'waiting' : 'ready';
+                const id = file.id;
+
+                handleFileStatus(id, { convertingStatus: status })
+            });
+        } updateFileStatus();
     }, [files])
-    
+
     return (
         <>
             <PageHeading heading={'Online Image Converter'} description={`File size must be less than ${formatBytes(maxImageConverterUploadSize, 0)}`} />
             <div className={' max-w-5xl w-full shadow-2xl rounded-lg overflow-hidden ' + ((colorScheme === 'dark') && ' shadow-slate-700')}>
-                <div className={'shadow-md bg-clr-200 rounded-md max-h-[40vh] overflow-auto ' }>
+                <div className={'shadow-md bg-clr-200 rounded-md max-h-[40vh] overflow-auto '}>
                     <input ref={inputRef} multiple max={10} maxLength={10} type='file' onChange={handleFile} className='hidden text-clr-100 text-2xl' placeholder='Input' id='convert-files' />
-                    {files.map((file, i) => <ConvertFile trackFileProgress={trackFileProgress} setFiles={setFiles} fileStatus={filesStatus[file.id]} file={file} key={i} />)}
+                    {files.map((file, i) => <ConvertFile setFiles={setFiles} fileStatus={filesStatus[file.id]} file={file} key={i} />)}
                 </div>
                 <div className='flex items-center justify-center gap-2 py-4'>
                     <span onClick={handleSelectAllButton} className='text-clr-100'>Convert all to:</span>

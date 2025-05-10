@@ -10,6 +10,7 @@ export default function DownloadFiles({ file, downloadSingleFile, filesStatus })
         finished:   colorScheme === 'dark' ? ' border-green-200 text-green-200 ' : ' border-green-500 text-green-500 ',
         waiting:    colorScheme === 'dark' ? ' border-yellow-200 text-yellow-200 ' : ' border-yellow-500 text-yellow-500 ',
         uploading:  colorScheme === 'dark' ? ' border-orange-200 text-orange-200 ' : ' border-orange-500 text-orange-500 ',
+        compressing:  colorScheme === 'dark' ? ' border-violet-200 text-violet-200 ' : ' border-violet-500 text-violet-500 ',
         converting: colorScheme === 'dark' ? ' border-blue-200 text-blue-200 '     : ' border-blue-500 text-blue-500 ',
         error:      colorScheme === 'dark' ? ' border-red-200 text-red-200 '       : ' border-red-500 text-red-500 ',
     };
