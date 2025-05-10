@@ -1,9 +1,7 @@
-import React, { useRef, forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import { uploadImageToCloudinary } from '../js/cloudinary/cloudinaryFunctions';
 import { sendImageIdToServerForDeletionAfterMonth } from '../js/serverFunctions';
-import { useNotificationStore } from '../zustand/store';
 function UploadImage({ setImageIsUploading, setUrlImageData, setProgress, setLoadingStatus }, inputRef) {
-    const setNotifications = useNotificationStore(state => state.setNotifications);
 
     function openFileBrowser() {
         inputRef.current.click();

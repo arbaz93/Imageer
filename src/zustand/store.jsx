@@ -22,3 +22,15 @@ export const useNotificationStore = create((set, get) => ({
     }, 5000); // 5 seconds
   },
 }));
+
+export const useColorSchemeStore = create((set) => ({
+  colorScheme: localStorage.getItem('imageerColorScheme') || 'light',
+
+  setColorScheme: (newColor) => {
+    if(newColor) {
+      set({colorScheme: newColor})
+      return;
+    }
+    set(state => ({ colorScheme: (state.colorScheme === 'dark' ? 'light' : 'dark') }))
+  }
+}))

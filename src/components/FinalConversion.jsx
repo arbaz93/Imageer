@@ -1,9 +1,11 @@
 import { DownloadFiles, PageHeading } from './';
-import { useNotificationStore } from '../zustand/store'
+import { useColorSchemeStore, useNotificationStore } from '../zustand/store'
+import { compressionStartSize } from '../utils/constants';
+import { formatBytes } from '../utils/miscFunctions';
 
-export default function FinalConversion({ filesStatus, setFilesStatus, files, setConvertingStatus, setConvertedFiles }) {
+export default function FinalConversion({ filesStatus, files, setConvertingStatus, setConvertedFiles }) {
     const setNotifications = useNotificationStore(state => state.setNotifications);
-
+    const colorScheme = useColorSchemeStore(state => state.colorScheme);
     function downloadSingleFile(file) {
         setNotifications({ message: 'download starting!', type: 'success' })
         const a = document.createElement('a');
@@ -16,42 +18,15 @@ export default function FinalConversion({ filesStatus, setFilesStatus, files, se
     }
 
     function downloadAllFiles() {
-        const filesAreReady = Object.keys(filesStatus).every(fId => filesStatus[fId].convertingStatus === 'finished');
-
         files.forEach((file, index) => {
-            console.log(filesStatus[file.id]?.convertingStatus)
             if (filesStatus[file.id]?.convertingStatus == 'finished') {
-                setNotifications({ message: 'download starting!', type: 'success' });
                 const delay = 500; // milliseconds between each download
 
                 setTimeout(() => {
-                    const a = document.createElement('a');
-                    a.download = file.filename || `image_${Date.now()}.${file.format}`;
-                    a.href = file.url;
-
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
+                    downloadSingleFile(file)
                 }, index * delay);
             }
         })
-
-        if(!filesAreReady) return;
-        setNotifications({ message: 'download starting!', type: 'success' })
-        const delay = 500; // milliseconds between each download
-
-        files.forEach((file, index) => {
-            setTimeout(() => {
-                const a = document.createElement('a');
-                a.download = file.filename || `image_${Date.now()}.${file.format}`;
-                a.href = file.url;
-
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            }, index * delay);
-        });
-        setFilesStatus({})
     }
 
     function convertMoreFiles() {
@@ -60,15 +35,14 @@ export default function FinalConversion({ filesStatus, setFilesStatus, files, se
     }
     return (
         <>
-            <PageHeading heading={'Image Conversion Complete!'} description={'Download your converted images'} />
+            <PageHeading heading={'Converting your files'} description={'Download your converted images'} />
 
-            <div className=' max-w-5xl w-full shadow-2xl rounded-lg overflow-hidden'>
+            <div className={' max-w-5xl w-full shadow-2xl rounded-lg overflow-hidden ' + ((colorScheme === 'dark') && ' shadow-slate-700')}>
                 <div className={'shadow-md bg-clr-200 rounded-md max-h-[40vh] overflow-auto'}>
                     {files.map((file, i) => <DownloadFiles file={file} filesStatus={filesStatus[file?.id]} key={i} downloadSingleFile={downloadSingleFile} />)}
                 </div>
                 <div className='flex items-center justify-center gap-2 py-4'>
-
-                    {/*  */}
+                    <p className='text-clr-100 text-xs sm:text-sm'>images greater than {formatBytes(compressionStartSize, 0)} will be compressed to make your conversions faster.</p>
                 </div>
                 <div>
                     <div className='bg-clr-200 sm:pl-6 flex flex-col sm:flex-row justify-between'>

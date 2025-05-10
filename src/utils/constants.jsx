@@ -13,3 +13,11 @@ export { default as plusIcon} from '../assets/plus.svg'
 export { default as imageFormat} from '../assets/image-format.svg'
 export { default as arrowRight} from '../assets/arrow-right.svg'
 export { default as bars} from '../assets/bars.svg'
+
+
+// Max size that can be uploaded
+export const maxImageConverterUploadSize = 10485760; // 10MB
+export const maxFilesAllowedForConversion = 10;
+
+// Compress image when size is greater than ↓.
+export const compressionStartSize = 3145728; // 3MB

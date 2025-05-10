@@ -2,13 +2,15 @@ import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { logoIcon, logoWhiteIcon, moonFillIcon, sunFillIcon } from '../utils/constants';
 import { useState } from 'react';
+import { useColorSchemeStore } from '../zustand/store';
 
-export default function Navigation({ colorScheme, setColorScheme }) {
+export default function Navigation({  }) {
   // current route
   const { pathname } = useLocation();
 
   const [mobileNavIsOpen, setMobileNavIsOpen] = useState(false);
-
+  const colorScheme = useColorSchemeStore(state => state.colorScheme);
+  const setColorScheme = useColorSchemeStore(state => state.setColorScheme)
   // Navigation links
   const links = [
     { label: 'uploader', to: '/upload-image'},
@@ -19,9 +21,7 @@ export default function Navigation({ colorScheme, setColorScheme }) {
 
 
   function handleColorScheme() {
-    const toggleColor = colorScheme === 'dark' ? 'light' : 'dark';
-
-    setColorScheme(toggleColor);
+    setColorScheme();
   }
   function handleNavigationMobileDisplay() {
     setMobileNavIsOpen(prev => !prev);
@@ -45,7 +45,7 @@ export default function Navigation({ colorScheme, setColorScheme }) {
             </div>
           </div>
           {/* Desktop Navigation */}
-          <div className='hidden sm:flex gap-2 text-xs md:text-sm lg:text-md'>
+          <div className='hidden sm:flex gap-2 text-xs md:text-sm'>
             <p className='text-primary-100 uppercase font-bold border-r-2 border-clr-100 px-2'>IMAGE</p>
             {links.map((link, i) => <Link key={i} to={link.to} className={'text-clr-300 uppercase border-b-2  hover:border-current hover:font-bold duration-200 ' + ((pathname === link.to) ? ' border-current font-bold ' : ' border-transparent ')}>{link.label}</Link>)}
           </div>

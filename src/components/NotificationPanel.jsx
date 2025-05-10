@@ -3,13 +3,13 @@ import React from 'react'
 import { useNotificationStore } from '../zustand/store';
 import Notification from './Notification';
 
-export default function NotificationPanel({ colorScheme }) {
+export default function NotificationPanel() {
     const notifications = useNotificationStore(state => state.notifications);
 
     return (
         <div className='max-w-64 absolute bottom-4 right-4'>
             <div className='flex flex-col gap-2 '>
-                {notifications.map((n, i) => <Notification  notification={n} key={i} colorScheme={colorScheme} i={i}/>)}
+                {notifications.map((n, i) => <Notification  notification={n} key={i} i={i}/>)}
             </div>
         </div>
     )

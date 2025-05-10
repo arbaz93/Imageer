@@ -4,12 +4,11 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Navigation, NotificationPanel} from './components';
 // Pages
 import { HomePage, ImageUploadPage, ImageFormatConvertPage, ErrorPage} from './pages';
+import { useColorSchemeStore } from './zustand/store';
 
 export default function App() {
-  // Read initial color scheme from localStorage or use 'light' as fallback
-  const initialColorScheme = localStorage.getItem('imageerColorScheme') || 'light';
-  const [colorScheme, setColorScheme] = useState(initialColorScheme);
 
+  const colorScheme = useColorSchemeStore(state => state.colorScheme);
 
   // Update localStorage whenever colorScheme changes
   useEffect(() => {
@@ -17,19 +16,25 @@ export default function App() {
 
     (colorScheme === 'dark') ? document.documentElement.classList.add('dark') : document.documentElement.classList.remove('dark');
   }, [colorScheme]);
+  useEffect(() => {
+    const localStorageClr = localStorage.getItem('imageerColorScheme')
+    if(localStorageClr === '' || !localStorageClr) {
+      localStorage.setItem('imageerColorScheme', colorScheme);
+    } 
+  }, []);
 
 
   return (
     <BrowserRouter>
       <main className="relative min-h-svh" >
-        <Navigation colorScheme={colorScheme} setColorScheme={setColorScheme} />
+        <Navigation />
         <Routes>
-        <Route path="/" element={<ImageFormatConvertPage />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/upload-image" element={<ImageUploadPage />} />
         <Route path="/convert-image" element={<ImageFormatConvertPage />} />
           <Route path="/oops" element={<ErrorPage />} />
         </Routes>
-        <NotificationPanel colorScheme={colorScheme} />
+        <NotificationPanel />
 
 
       </main>

@@ -3,28 +3,35 @@ import ConvertFile from './ConvertFile';
 import { nanoid } from 'nanoid';
 import conversionFormats from '../utils/conversionFormats';
 import { validateImagesForConversion, sendAnImageForConversion } from '../js/image-conversion/imageConversion';
-import { useNotificationStore } from '../zustand/store'
+import { useColorSchemeStore, useNotificationStore } from '../zustand/store'
 import { PageHeading } from './';
+import { formatBytes } from '../utils/miscFunctions';
+import { compressionStartSize, maxImageConverterUploadSize } from '../utils/constants';
+import { compressImage } from '../js/image-compressor/imageCompressor';
 
 export default function ImageConverter({ setConvertedFiles, setConvertingStatus, setFilesStatus, filesStatus }) {
     const [files, setFiles] = useState([]);
     const inputRef = useRef(null);
     const formatRef = useRef(null);
     const setNotifications = useNotificationStore(state => state.setNotifications);
-
+    const colorScheme = useColorSchemeStore(state => state.colorScheme);
 
     function openFileBrowser() {
         inputRef.current.click();
     }
     function handleFile(e) {
         const inFiles = Array.from(e.target.files);
-
         const newFilesWithIds = inFiles.map(file => {
+            if(file.size > maxImageConverterUploadSize) {
+                setNotifications({ message: `${file.name} size is more than ${formatBytes(maxImageConverterUploadSize, 0)}.`, type: 'error'})
+                return false;
+            }
             const id = nanoid();
             file.id = id
 
             return file;
-        });
+        }).filter(file => file);
+
         setFiles(prevFiles => [...prevFiles, ...newFilesWithIds])
 
     }
@@ -81,7 +88,17 @@ export default function ImageConverter({ setConvertedFiles, setConvertingStatus,
         // Send images for conversion to server
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
-            const res = await sendAnImageForConversion(file, (prog) => trackFileProgress(file.id, prog));
+
+            // Compress image to increase performance
+            let compressedFile = null;
+            if(file.size > compressionStartSize) {
+                console.log('compressing')
+                compressedFile = await compressImage(file);
+                compressedFile.convertTo = file.convertTo;
+
+            }
+            console.log(file.size)
+            const res = await sendAnImageForConversion(compressedFile ?? file, (prog) => trackFileProgress(file.id, prog));
         
             if (!res.success) {
                 setConvertingStatus('error');
@@ -146,27 +163,26 @@ export default function ImageConverter({ setConvertedFiles, setConvertingStatus,
             ...prev,
             [id]: {
                 ...(prev[id] || {}),
-                convertingStatus: 'converting',
+                convertingStatus: (progress == 100) ? 'converting' : 'uploading',
                 progress
             }
         }));
     }
-
     useEffect(() => {
         handleFileStatus();
     }, [files])
     
     return (
         <>
-            <PageHeading heading={'Online Image Converter'} description={'Convert your images to any format'} />
-            <div className=' max-w-5xl w-full shadow-2xl rounded-lg overflow-hidden'>
-                <div className={'shadow-md bg-clr-200 rounded-md max-h-[40vh] overflow-auto'}>
+            <PageHeading heading={'Online Image Converter'} description={`File size must be less than ${formatBytes(maxImageConverterUploadSize, 0)}`} />
+            <div className={' max-w-5xl w-full shadow-2xl rounded-lg overflow-hidden ' + ((colorScheme === 'dark') && ' shadow-slate-700')}>
+                <div className={'shadow-md bg-clr-200 rounded-md max-h-[40vh] overflow-auto ' }>
                     <input ref={inputRef} multiple max={10} maxLength={10} type='file' onChange={handleFile} className='hidden text-clr-100 text-2xl' placeholder='Input' id='convert-files' />
                     {files.map((file, i) => <ConvertFile trackFileProgress={trackFileProgress} setFiles={setFiles} fileStatus={filesStatus[file.id]} file={file} key={i} />)}
                 </div>
                 <div className='flex items-center justify-center gap-2 py-4'>
                     <span onClick={handleSelectAllButton} className='text-clr-100'>Convert all to:</span>
-                    <select ref={formatRef} onChange={handleSelectAllButton} defaultValue={'...'} className='rounded-sm text-clr-100 px-1.5 py-1.5 outline outline-clr-100 focus:outline-2 focus-within:outline-2'>
+                    <select ref={formatRef} onChange={handleSelectAllButton} defaultValue={'...'} className={'rounded-sm text-clr-300 px-1.5 py-1.5 outline outline-clr-100 focus:outline-2 focus-within:outline-2 ' + ((colorScheme === 'dark') ? ' text-clr-100 bg-clr-100 ' : ' text-clr-300 ')}>
                         {conversionFormats.map((format, i) => <option key={i} className='px-1.5 py-2 text-clr-100'>{format}</option>)}
                     </select>
                 </div>

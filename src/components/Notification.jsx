@@ -1,6 +1,8 @@
 import React from 'react'
+import { useColorSchemeStore } from '../zustand/store';
 
-export default function Notification({ notification: {message, type }, colorScheme, i }) {
+export default function Notification({ notification: {message, type }, i }) {
+  const colorScheme = useColorSchemeStore(state => state.colorScheme);
 
   const successClr = colorScheme === 'dark' ? ' bg-teal-600 ' : ' bg-teal-200 ';
   const errorClr = colorScheme === 'dark' ? ' bg-red-600 ' : ' bg-red-100 ';
