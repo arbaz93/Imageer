@@ -42,7 +42,7 @@ export default function FinalConversion({ filesStatus, files, setConvertingStatu
                     {files.map((file, i) => <DownloadFiles file={file} filesStatus={filesStatus[file?.id]} key={i} downloadSingleFile={downloadSingleFile} />)}
                 </div>
                 <div className='flex items-center justify-center gap-2 py-4'>
-                    <p className='text-clr-100 text-xs sm:text-sm'>images greater than {formatBytes(compressionStartSize, 0)} will be compressed to make your conversions faster.</p>
+                    <p className='text-clr-100 text-xs sm:text-sm px-4'>images greater than {formatBytes(compressionStartSize, 0)} will be compressed to make your conversions faster.</p>
                 </div>
                 <div>
                     <div className='bg-clr-200 sm:pl-6 flex flex-col sm:flex-row justify-between'>

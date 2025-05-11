@@ -156,7 +156,7 @@ export default function ImageConverter({ setConvertedFiles, setConvertingStatus,
     return (
         <>
             <PageHeading heading={'Online Image Converter'} description={`File size must be less than ${formatBytes(maxImageConverterUploadSize, 0)}`} />
-            <div className={' max-w-5xl w-full shadow-2xl rounded-lg overflow-hidden ' + ((colorScheme === 'dark') && ' shadow-slate-700')}>
+            <div className={' max-w-4xl w-full shadow-2xl rounded-lg overflow-hidden ' + ((colorScheme === 'dark') && ' shadow-slate-700')}>
                 <div className={'shadow-md bg-clr-200 rounded-md max-h-[40vh] overflow-auto '}>
                     <input ref={inputRef} multiple max={10} maxLength={10} type='file' onChange={handleFile} className='hidden text-clr-100 text-2xl' placeholder='Input' id='convert-files' />
                     {files.map((file, i) => <ConvertFile setFiles={setFiles} fileStatus={filesStatus[file.id]} file={file} key={i} />)}
