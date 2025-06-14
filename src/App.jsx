@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 // Components
-import { Navigation, NotificationPanel} from './components';
+import { Footer, Navigation, NotificationPanel} from './components';
 // Pages
 import { HomePage, ImageUploadPage, ImageFormatConvertPage, ErrorPage} from './pages';
 import { useColorSchemeStore } from './zustand/store';
@@ -26,7 +26,8 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <main className="relative min-h-svh" >
+      <div id='top'></div>
+      <main className="relative" >
         <Navigation />
         <Routes>
         <Route path="/" element={<HomePage />} />
@@ -36,7 +37,7 @@ export default function App() {
         </Routes>
         <NotificationPanel />
 
-
+        <Footer />
       </main>
     </BrowserRouter>
   );

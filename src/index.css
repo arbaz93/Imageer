@@ -72,7 +72,9 @@ html.dark {
   --clr-white:#FFFFFF;
   --cr:  #4d5562;
 }
-
+html {
+  scroll-behavior: smooth;
+}
 body {
   font-family: 'Inter';
   background-color: var(--bg-clr-100);

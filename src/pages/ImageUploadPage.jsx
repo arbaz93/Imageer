@@ -8,8 +8,8 @@ export default function ImageUploadPage() {
   const [loadingStatus, setLoadingStatus] = useState('Uploading');
 
   return (
-    <section className='w-full h-dvh flex items-center justify-center absolute top-0'>
-      <div className='grid gap-8 w-full px-8'>
+    <section className='w-full min-h-[80vh] flex items-center justify-center'>
+      <div className='grid gap-8 w-full px-8 py-12'>
         
         {
           urlImageData ? 
@@ -17,7 +17,6 @@ export default function ImageUploadPage() {
               !imageIsUploading ? 
               <ImageUploader setImageIsUploading={setImageIsUploading} setUrlImageData={setUrlImageData} setProgress={setProgress} setLoadingStatus={setLoadingStatus}/> :
               <Loading text={loadingStatus} progress={progress}/>
-
         }
       </div>
     </section>

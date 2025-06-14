@@ -43,6 +43,7 @@ export default function Navigation({  }) {
             <div className='flex flex-col gap-2'>
             {links.map((link, i) => <Link key={i} to={link.to} className={'text-clr-300 uppercase border-b-2  hover:border-current hover:font-bold duration-200 ' + ((pathname === link.to) ? ' border-current font-bold ' : ' border-transparent ')}>{link.label}</Link>)}
             </div>
+            {/* Add a more tools link here */}
           </div>
           {/* Desktop Navigation */}
           <div className='hidden sm:flex gap-2 text-xs md:text-sm'>

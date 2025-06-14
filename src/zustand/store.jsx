@@ -34,3 +34,14 @@ export const useColorSchemeStore = create((set) => ({
     set(state => ({ colorScheme: (state.colorScheme === 'dark' ? 'light' : 'dark') }))
   }
 }))
+
+
+export const useFilesStatusStore = create((set) => ({
+  filesStatus: {},
+
+  setFilesStatus: (newStatus) => {
+    set(state => ({
+      filesStatus: { ...state.filesStatus, ...newStatus }
+    }));
+  }
+}));

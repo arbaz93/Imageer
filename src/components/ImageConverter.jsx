@@ -3,19 +3,20 @@ import ConvertFile from './ConvertFile';
 import { nanoid } from 'nanoid';
 import conversionFormats from '../utils/conversionFormats';
 import { validateImagesForConversion, sendAnImageForConversion } from '../js/image-conversion/imageConversion';
-import { useColorSchemeStore, useNotificationStore } from '../zustand/store'
+import { useColorSchemeStore, useFilesStatusStore, useNotificationStore } from '../zustand/store'
 import { PageHeading } from './';
 import { formatBytes } from '../utils/miscFunctions';
-import { compressionStartSize, maxImageConverterUploadSize, maxFilesAllowedForConversion } from '../utils/constants';
+import { compressionStartSize, maxImageConverterUploadSize, maxFilesAllowedForConversion, uploadIcon } from '../utils/constants';
 import { compressImage } from '../js/image-compressor/imageCompressor';
 
-export default function ImageConverter({ setConvertedFiles, setConvertingStatus, setFilesStatus, filesStatus }) {
+export default function ImageConverter({ setConvertedFiles, setConvertingStatus }) {
     const [files, setFiles] = useState([]);
     const inputRef = useRef(null);
     const formatRef = useRef(null);
     const setNotifications = useNotificationStore(state => state.setNotifications);
     const colorScheme = useColorSchemeStore(state => state.colorScheme);
-
+    const filesStatus = useFilesStatusStore(state => state.filesStatus);
+    const setFilesStatus = useFilesStatusStore(state => state.setFilesStatus);
     function openFileBrowser() {
         inputRef.current.click();
     }
@@ -98,7 +99,7 @@ export default function ImageConverter({ setConvertedFiles, setConvertingStatus,
                 continue;
             }
             
-            handleFileStatus(file.id, { convertingStatus: 'finished'})
+            handleFileStatus(file.id, { progress: 100, convertingStatus: 'finished'})
             setConvertedFiles(prevFiles => {
                 const updated = [...prevFiles];
                 updated[i] = {
@@ -125,8 +126,9 @@ export default function ImageConverter({ setConvertedFiles, setConvertingStatus,
 
     // set progress status mid upload to server
     function trackUploadProgress(id, progress ) {
+        console.log(id, progress)
         const status = progress === 100 ? 'converting' : 'uploading'
-        handleFileStatus(id, { progress, convertingStatus: status })
+        handleFileStatus(id, { progress: progress, convertingStatus: status })
     }
     function trackCompressionProgress(id, progress ) {
         handleFileStatus(id, { progress, convertingStatus: 'compressing' })
@@ -134,13 +136,12 @@ export default function ImageConverter({ setConvertedFiles, setConvertingStatus,
 
     // Basic Function to update file status
     function handleFileStatus(id, updates) {
-        setFilesStatus(prev => ({
-            ...prev,
+        setFilesStatus({
             [id]: {
-                ...(prev[id] || {}),
+                ...(filesStatus[id] || {}),
                 ...updates
             }
-        }))
+        })
     }
     useEffect(() => {
         function updateFileStatus() {
@@ -159,7 +160,7 @@ export default function ImageConverter({ setConvertedFiles, setConvertingStatus,
             <div className={' max-w-4xl w-full shadow-2xl rounded-lg overflow-hidden ' + ((colorScheme === 'dark') && ' shadow-slate-700')}>
                 <div className={'shadow-md bg-clr-200 rounded-md max-h-[40vh] overflow-auto '}>
                     <input ref={inputRef} multiple max={10} maxLength={10} type='file' onChange={handleFile} className='hidden text-clr-100 text-2xl' placeholder='Input' id='convert-files' />
-                    {files.map((file, i) => <ConvertFile setFiles={setFiles} fileStatus={filesStatus[file.id]} file={file} key={i} />)}
+                    {files.map((file, i) => <ConvertFile setFiles={setFiles} fileStatus={filesStatus[file.id] ?? '...'} file={file} key={i} />)}
                 </div>
                 <div className='flex items-center justify-center gap-2 py-4'>
                     <span onClick={handleSelectAllButton} className='text-clr-100'>Convert all to:</span>

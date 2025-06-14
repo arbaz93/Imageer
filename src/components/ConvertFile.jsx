@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import conversionFormats from '../utils/conversionFormats';
 import { crossIcon, imageFormat } from '../utils/constants'
 import { formatBytes } from '../utils/miscFunctions'

@@ -1,11 +1,12 @@
 import { DownloadFiles, PageHeading } from './';
-import { useColorSchemeStore, useNotificationStore } from '../zustand/store'
+import { useColorSchemeStore, useNotificationStore, useFilesStatusStore } from '../zustand/store'
 import { compressionStartSize } from '../utils/constants';
 import { formatBytes } from '../utils/miscFunctions';
 
-export default function FinalConversion({ filesStatus, files, setConvertingStatus, setConvertedFiles }) {
+export default function FinalConversion({ files, setConvertingStatus, setConvertedFiles }) {
     const setNotifications = useNotificationStore(state => state.setNotifications);
     const colorScheme = useColorSchemeStore(state => state.colorScheme);
+    const filesStatus = useFilesStatusStore(state => state.filesStatus);
     function downloadSingleFile(file) {
         setNotifications({ message: 'download starting!', type: 'success' })
         const a = document.createElement('a');
@@ -33,6 +34,7 @@ export default function FinalConversion({ filesStatus, files, setConvertingStatu
         setConvertedFiles([]);
         setConvertingStatus(null)
     }
+
     return (
         <>
             <PageHeading heading={'Converting your files'} description={'Download your converted images'} />
