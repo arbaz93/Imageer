@@ -15,8 +15,10 @@ export default function Navigation({  }) {
   const links = [
     { label: 'uploader', to: '/upload-image'},
     { label: 'converter', to: '/convert-image'},
-    { label: 'enhancer', to: '/enhance-image'},
-    { label: 'resizer', to: '/resize-image'}
+    // { label: 'enhancer', to: '/enhance-image'},
+    // { label: 'resizer', to: '/resize-image'}
+    { label: 'enhancer', to: '/under-construction'},
+    { label: 'resizer', to: '/under-construction'}
   ]
 
 

@@ -1,4 +1,5 @@
 import { ImageConverter } from '../components'
+import ImageFormatConvertPage from './ImageFormatConvertPage'
 import banner1 from '../assets/banner-1.jpg'
 import { useColorSchemeStore } from '../zustand/store'
 import { socialLinks } from '../utils/socialLinks'
@@ -65,7 +66,7 @@ export default function HomePage() {
   return (
     <div className='flex flex-col items-center justify-center gap-12 w-full mx-auto top-0 left-0 py-8 '>
       <section className={'flex flex-col items-center justify-center gap-8 w-full h-full min-h-[60vh] ' + wrapper}>
-        <ImageConverter />
+        <ImageFormatConvertPage />
       </section>
       {/* Services */}
       <section className={wrapper}>

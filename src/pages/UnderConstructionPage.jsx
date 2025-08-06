@@ -1,4 +1,4 @@
-const ErrorPage = () => {
+const UnderConstructionPage = () => {
 
     return (
         <div className={"absolute top-0 left-0 h-screen w-screen z-10 flex items-center justify-center bg-clr-100  px-4 "}>
@@ -24,10 +24,10 @@ const ErrorPage = () => {
                     </svg>
                 </div>
                 <h1 className="text-2xl font-semibold text-clr-100 mb-2">
-                    Oops! Something went wrong.
+                   This Page is currently under construction.
                 </h1>
                 <p className="text-gray-600 dark:text-gray-400 mb-6">
-                    We couldn’t process your file. Please try again.
+                    Try again later. Thank You!
                 </p>
                 <a
                     href="/"
@@ -40,4 +40,4 @@ const ErrorPage = () => {
     );
 };
 
-export default ErrorPage;
+export default UnderConstructionPage;

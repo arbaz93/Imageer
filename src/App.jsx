@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 // Components
 import { Footer, Navigation, NotificationPanel} from './components';
 // Pages
-import { HomePage, ImageUploadPage, ImageFormatConvertPage, ErrorPage} from './pages';
+import { HomePage, ImageUploadPage, ImageFormatConvertPage, ErrorPage, UnderConstructionPage} from './pages';
 import { useColorSchemeStore } from './zustand/store';
 
 export default function App() {
@@ -33,6 +33,7 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/upload-image" element={<ImageUploadPage />} />
         <Route path="/convert-image" element={<ImageFormatConvertPage />} />
+        <Route path="/under-construction" element={<UnderConstructionPage />} />
           <Route path="/oops" element={<ErrorPage />} />
         </Routes>
         <NotificationPanel />

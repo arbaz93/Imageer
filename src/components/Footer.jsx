@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { logoWhiteIcon, arrowRight } from '../utils/constants'
+import { logoWhiteIcon } from '../utils/constants'
 import { socailItems } from '../utils/socialLinks'
 
 export default function Footer() {
@@ -71,14 +71,14 @@ export default function Footer() {
                 {/* Social Icons */}
                 <div className='flex gap-4 w-full md:w-1/3 md:justify-end'>
                     {socailItems.map(link => (
-                        <Link to={link.link} title={link.name} key={link.name}>
+                        <Link to={link.link} title={link?.title ?? ''} key={link.name}>
                             <svg viewBox={link.viewBox} className={'w-6 h-6 sm:w-8 sm:h-8 fill-white opacity-80 hover:opacity-100 duration-200'}>
                                 {link.icon}
                             </svg>
                         </Link>
                     ))}
                 </div>
-                <div className='w-full'>
+                <div className='w-full '>
                     <a href={'#top'} title="to top" className='bg-white inline-block p-3.5 rounded-md'>
                         <svg xmlns="http://www.w3.org/2000/svg" className='fill-[#4D5562] w-4 h-4 rotate-[-90deg]' viewBox="0 0 448 512"><path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/></svg>
                     </a>

@@ -2,7 +2,7 @@ import { imageFormat, spinnerIcon, downloadIcon, crossIcon } from '../utils/cons
 import { formatBytes } from '../utils/miscFunctions'
 import { useColorSchemeStore } from '../zustand/store';
 
-export default function DownloadFiles({ file, downloadSingleFile, filesStatus }) {
+export default function  DownloadFiles({ file, downloadSingleFile, filesStatus }) {
     const colorScheme = useColorSchemeStore(state => state.colorScheme);
     const statusColors = {
         ready:      colorScheme === 'dark' ? ' border-green-200 text-green-200 ' : ' border-green-500 text-green-500 ',
@@ -25,8 +25,8 @@ export default function DownloadFiles({ file, downloadSingleFile, filesStatus })
             <p className=' text-xs text-clr-300 opacity-80 '>{formatBytes(file?.size)}</p>
 
             <button disabled={(file.size == 0) ? true : false} onClick={() => downloadSingleFile(file)} className={'group gap-2 text-center flex items-center justify-center bg-primary-100 hover:opacity-40 duration-200 h-full w-full max-w-[10rem]  px-6 py-4 sm:py-0 ' + ((file.size == 0 || !file.size) ? ' opacity-40 ' : '  opacity-100 ')} >
-                <img src={((filesStatus?.convertingStatus == 'finished') ? downloadIcon : (filesStatus?.convertingStatus == 'error') ? crossIcon : spinnerIcon)} alt='spinner' className={' ' + (((filesStatus?.convertingStatus == 'converting' || filesStatus?.convertingStatus == 'waiting') ? ' animate-spin ' : ' '))}/>
-                <span className='font-bold text-md text-clr-400 text-center w-full'>Download</span>
+                <img src={((filesStatus?.convertingStatus == 'finished') ? downloadIcon : (filesStatus?.convertingStatus == 'error') ? crossIcon : spinnerIcon)} alt='spinner' className={' min-w-4 sm:min-w-auto' + (((filesStatus?.convertingStatus == 'converting' || filesStatus?.convertingStatus == 'waiting') ? ' animate-spin ' : ' '))}/>
+                <span className='hidden sm:block font-bold text-md text-clr-400 text-center w-full'>Download</span>
             </button>
         </div>
     )

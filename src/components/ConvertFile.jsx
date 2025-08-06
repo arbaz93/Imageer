@@ -21,7 +21,7 @@ export default function ConvertFile({ setFiles, file, fileStatus }) {
         <div className='special-grid-100 items-center justify-between px-4 py-2 border-b border-clr-100'>
             <div className='flex-1 flex items-center gap-2 overflow-ellipsis max-w-[40ch]'>
                 <img src={imageFormat} alt='image icon' />
-                <p className='text-clr-300 w-[22ch] sm:w-auto text-md whitespace-nowrap overflow-hidden text-ellipsis'>{file?.name}</p>
+                <p className='text-clr-300 w-[40vw] sm:w-auto text-md whitespace-nowrap overflow-hidden text-ellipsis'>{file?.name}</p>
             </div>
             <div className=' flex gap-2 items-center justify-between'>
                 <div className='flex items-center gap-2'>
