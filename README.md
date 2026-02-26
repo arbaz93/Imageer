@@ -1,6 +1,6 @@
 # 🌄 Imageer
 
-**Imageer** is a modern, responsive full-stack web application that allows users to upload images, share them via social media or shareable links, and download them with ease. The platform supports both light and dark modes and ensures user-uploaded images are stored securely for 30 days before being automatically deleted by a background server process.
+**Imageer** is a modern, responsive full-stack web application that allows users to upload images, convert them into multiple formats, share them via social media or shareable links, and download them with ease. The platform supports both light and dark modes and ensures user-uploaded images are stored securely for 30 days before being automatically deleted by a background server process.
 
 🔗 **Live Demo**: [https://imageer.netlify.app/](https://imageer.netlify.app/)  
 📦 **GitHub Repo**: [https://github.com/arbaz93/Imageer.git](https://github.com/arbaz93/Imageer.git)
@@ -12,12 +12,16 @@
 ## 🚀 Features
 
 - 📤 Upload images to cloud storage
+- 🔄 Convert images into multiple formats:
+   -png, jpeg, jpg, jpe, gif, webp, tiff, tif, avif, dz, raw
+- 📂 Convert multiple images at the same time (batch conversion)
+- 🌐 Server-side image conversion (works from any device — no local processing required)
 - 🔗 Generate and copy shareable links
 - 📣 Share directly to social media
-- 💾 Download uploaded images
+- 💾 Download uploaded or converted images
 - ⏳ Images automatically deleted after 30 days (managed via queue and cron jobs)
 - 🌙 Light and Dark Mode support
-- 🖥️ Fully responsive and modern UI (based on [DevChallenges.io](https://devchallenges.io/))
+- 🖥️ Fully responsive and modern UI (based on DevChallenges.io)
 - 🧹 Clean, maintainable code following industry standards
 
 ---
@@ -132,7 +136,6 @@ To run the imageer frontend locally:
 
 Planned enhancements:
 
-- 📷 Image format conversion (e.g., PNG to JPG)
 - ✂️ Cropping and resizing tools
 - 🌟 Image enhancements (brightness, contrast, filters)
 - 🔧 Advanced image editing features
