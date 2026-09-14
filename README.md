@@ -5,8 +5,8 @@
 🔗 **Live Demo**: [https://imageer.netlify.app/](https://imageer.netlify.app/)  
 📦 **GitHub Repo**: [https://github.com/arbaz93/Imageer.git](https://github.com/arbaz93/Imageer.git)
 
-![Imageer Preview](https://i.postimg.cc/x8HrnbY2/Desktop-1350px.jpg)
-![Imageer Preview](https://i.postimg.cc/vTMjQ3v7/Imageer.png)
+![Imageer Preview](https://i.postimg.cc/YCvxcHNc/Imageer.png)
+![Imageer Preview](https://i.postimg.cc/8z7b8SdC/Imageer-3.png)
 
 ---
 
