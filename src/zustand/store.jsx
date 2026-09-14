@@ -40,8 +40,14 @@ export const useFilesStatusStore = create((set) => ({
   filesStatus: {},
 
   setFilesStatus: (newStatus) => {
-    set(state => ({
-      filesStatus: { ...state.filesStatus, ...newStatus }
-    }));
+    set(state => {
+      const status = typeof newStatus === 'function'
+        ? newStatus(state.filesStatus)
+        : newStatus;
+
+      return {
+        filesStatus: { ...state.filesStatus, ...status }
+      };
+    });
   }
 }));

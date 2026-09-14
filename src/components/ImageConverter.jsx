@@ -136,19 +136,24 @@ export default function ImageConverter({ setConvertedFiles, setConvertingStatus 
 
     // Basic Function to update file status
     function handleFileStatus(id, updates) {
-        setFilesStatus({
+        setFilesStatus(currentStatus => ({
             [id]: {
-                ...(filesStatus[id] || {}),
+                ...(currentStatus[id] || {}),
                 ...updates
             }
-        })
+        }))
     }
     useEffect(() => {
         files.forEach(file => {
             const status = (!file?.convertTo || file?.convertTo === '...') ? 'waiting' : 'ready';
-            setFilesStatus({ [file.id]: { ...(filesStatus[file.id] || {}), convertingStatus: status } });
+            setFilesStatus(currentStatus => ({
+                [file.id]: {
+                    ...(currentStatus[file.id] || {}),
+                    convertingStatus: status
+                }
+            }));
         });
-    }, [files, filesStatus, setFilesStatus])
+    }, [files, setFilesStatus])
 
     return (
         <>
