@@ -7,7 +7,7 @@ export function shareToTwitter(imageUrl, text = '') {
     const url = `https://twitter.com/intent/tweet?url=${encodeURIComponent(imageUrl)}&text=${encodeURIComponent(text)}`;
     window.open(url, '_blank');
 }
-export function shareToInstagram(imageUrl) {
+export function shareToInstagram() {
     
 }
 export function shareToWhatsapp(imageUrl, text = '') {

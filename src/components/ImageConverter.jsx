@@ -6,7 +6,7 @@ import { validateImagesForConversion, sendAnImageForConversion } from '../js/ima
 import { useColorSchemeStore, useFilesStatusStore, useNotificationStore } from '../zustand/store'
 import { PageHeading } from './';
 import { formatBytes } from '../utils/miscFunctions';
-import { compressionStartSize, maxImageConverterUploadSize, maxFilesAllowedForConversion, uploadIcon } from '../utils/constants';
+import { compressionStartSize, maxImageConverterUploadSize, maxFilesAllowedForConversion } from '../utils/constants';
 import { compressImage } from '../js/image-compressor/imageCompressor';
 
 export default function ImageConverter({ setConvertedFiles, setConvertingStatus }) {
@@ -144,15 +144,11 @@ export default function ImageConverter({ setConvertedFiles, setConvertingStatus 
         })
     }
     useEffect(() => {
-        function updateFileStatus() {
-            files.forEach(file => {
-                const status = (!file?.convertTo || file?.convertTo === '...') ? 'waiting' : 'ready';
-                const id = file.id;
-
-                handleFileStatus(id, { convertingStatus: status })
-            });
-        } updateFileStatus();
-    }, [files])
+        files.forEach(file => {
+            const status = (!file?.convertTo || file?.convertTo === '...') ? 'waiting' : 'ready';
+            setFilesStatus({ [file.id]: { ...(filesStatus[file.id] || {}), convertingStatus: status } });
+        });
+    }, [files, filesStatus, setFilesStatus])
 
     return (
         <>

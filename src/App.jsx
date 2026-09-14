@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 // Components
 import { Footer, Navigation, NotificationPanel} from './components';
@@ -16,18 +16,10 @@ export default function App() {
 
     (colorScheme === 'dark') ? document.documentElement.classList.add('dark') : document.documentElement.classList.remove('dark');
   }, [colorScheme]);
-  useEffect(() => {
-    const localStorageClr = localStorage.getItem('imageerColorScheme')
-    if(localStorageClr === '' || !localStorageClr) {
-      localStorage.setItem('imageerColorScheme', colorScheme);
-    } 
-  }, []);
-
-
   return (
     <BrowserRouter>
       <div id='top'></div>
-      <main className="relative" >
+      <main className="relative flex min-h-screen flex-col" >
         <Navigation />
         <Routes>
         <Route path="/" element={<HomePage />} />

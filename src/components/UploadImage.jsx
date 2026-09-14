@@ -25,7 +25,7 @@ function UploadImage({ setImageIsUploading, setUrlImageData, setProgress, setLoa
             .then(async (res) => {
                 if(res.status == 200) {
                     setLoadingStatus('Processing image');
-                    const req = await sendImageIdToServerForDeletionAfterMonth(res.data.public_id);
+                    await sendImageIdToServerForDeletionAfterMonth(res.data.public_id);
                     const secureUrl = res.data.url.replace(/^http:/, 'https:');
                     const data = {
                         ...res.data,
