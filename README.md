@@ -14,7 +14,7 @@
 
 - 📤 Upload images to cloud storage
 - 🔄 Convert images into multiple formats:
-   -png, jpeg, jpg, jpe, gif, webp, tiff, tif, avif, dz, raw
+    -png, jpeg, jpg, jpe, gif, webp, tiff, tif, dz, raw
 - 📂 Convert multiple images at the same time (batch conversion)
 - 🌐 Server-side image conversion (works from any device — no local processing required)
 - 🔗 Generate and copy shareable links

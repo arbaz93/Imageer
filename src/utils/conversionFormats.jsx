@@ -10,7 +10,6 @@ const conversionFormats = [
     'webp',
     'tiff',
     'tif',
-    'avif',
     'dz',
     // 'jpx',
     // 'j2k',
