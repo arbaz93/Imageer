@@ -6,7 +6,7 @@ import { validateImagesForConversion, sendAnImageForConversion } from '../js/ima
 import { useColorSchemeStore, useFilesStatusStore, useNotificationStore } from '../zustand/store'
 import { PageHeading } from './';
 import { formatBytes } from '../utils/miscFunctions';
-import { compressionStartSize, maxImageConverterUploadSize, maxFilesAllowedForConversion, uploadIcon } from '../utils/constants';
+import { compressionStartSize, maxImageConverterUploadSize, maxFilesAllowedForConversion } from '../utils/constants';
 import { compressImage } from '../js/image-compressor/imageCompressor';
 
 export default function ImageConverter({ setConvertedFiles, setConvertingStatus }) {
@@ -136,23 +136,24 @@ export default function ImageConverter({ setConvertedFiles, setConvertingStatus 
 
     // Basic Function to update file status
     function handleFileStatus(id, updates) {
-        setFilesStatus({
+        setFilesStatus(currentStatus => ({
             [id]: {
-                ...(filesStatus[id] || {}),
+                ...(currentStatus[id] || {}),
                 ...updates
             }
-        })
+        }))
     }
     useEffect(() => {
-        function updateFileStatus() {
-            files.forEach(file => {
-                const status = (!file?.convertTo || file?.convertTo === '...') ? 'waiting' : 'ready';
-                const id = file.id;
-
-                handleFileStatus(id, { convertingStatus: status })
-            });
-        } updateFileStatus();
-    }, [files])
+        files.forEach(file => {
+            const status = (!file?.convertTo || file?.convertTo === '...') ? 'waiting' : 'ready';
+            setFilesStatus(currentStatus => ({
+                [file.id]: {
+                    ...(currentStatus[file.id] || {}),
+                    convertingStatus: status
+                }
+            }));
+        });
+    }, [files, setFilesStatus])
 
     return (
         <>
@@ -175,8 +176,8 @@ export default function ImageConverter({ setConvertedFiles, setConvertingStatus 
                             <span>Add more files</span>
                         </button>
                         <button onClick={() => handleConversion(files)} className='group flex items-center justify-between bg-primary-100 w-full duration-200 sm:max-w-60 px-6 py-4 sm:py-0' >
-                            <span className='font-bold text-lg text-clr-400'>Convert</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" className='w-4 fill-[#F9FAFB] group-hover:translate-x-2 group-focus:translate-x-2 group-focus-within:translate-x-2 group-hover:scale-150 group-focus:scale-150 group-focus-within:scale-150 duration-200' viewBox="0 0 448 512"><path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" /></svg>
+                            <span className='font-bold text-lg text-white'>Convert</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" className='w-4 fill-white group-hover:translate-x-2 group-focus:translate-x-2 group-focus-within:translate-x-2 group-hover:scale-150 group-focus:scale-150 group-focus-within:scale-150 duration-200' viewBox="0 0 448 512"><path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" /></svg>
                         </button>
                     </div>
                 </div>

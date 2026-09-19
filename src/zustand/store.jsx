@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export const useNotificationStore = create((set, get) => ({
+export const useNotificationStore = create((set) => ({
   notifications: [],
 
   // Notifications template...
@@ -23,8 +23,17 @@ export const useNotificationStore = create((set, get) => ({
   },
 }));
 
+const getPreferredColorScheme = () => {
+  if (typeof window === 'undefined') return 'light';
+
+  const stored = localStorage.getItem('imageerColorScheme');
+  if (stored === 'light' || stored === 'dark') return stored;
+
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+};
+
 export const useColorSchemeStore = create((set) => ({
-  colorScheme: localStorage.getItem('imageerColorScheme') || 'light',
+  colorScheme: getPreferredColorScheme(),
 
   setColorScheme: (newColor) => {
     if(newColor) {
@@ -40,8 +49,14 @@ export const useFilesStatusStore = create((set) => ({
   filesStatus: {},
 
   setFilesStatus: (newStatus) => {
-    set(state => ({
-      filesStatus: { ...state.filesStatus, ...newStatus }
-    }));
+    set(state => {
+      const status = typeof newStatus === 'function'
+        ? newStatus(state.filesStatus)
+        : newStatus;
+
+      return {
+        filesStatus: { ...state.filesStatus, ...status }
+      };
+    });
   }
 }));

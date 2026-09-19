@@ -1,88 +1,20 @@
 import { Link } from 'react-router-dom'
 import { logoWhiteIcon } from '../utils/constants'
-import { socailItems } from '../utils/socialLinks'
+import { socialLinks } from '../utils/socialLinks'
 
 export default function Footer() {
-    const imageManipulationlinks = [
-        { label: 'uploader', to: '/upload-image' },
-        { label: 'converter', to: '/convert-image' },
-        { label: 'enhancer', to: '/enhance-image' },
-        { label: 'resizer', to: '/resize-image' }
-    ]
-    const systemLinks = [
-        { label: 'about us', to: '/about-us' },
-        { label: 'Security', to: '/security' },
-        { label: 'Formats', to: '/formats' },
-        { label: 'help', to: '/resize-image' }
-    ]
-    const miscLinks = [
-        { label: 'Cookies Policy', to: '/cookies-policy' },
-        { label: 'Legal Terms', to: '/legal-terms' },
-        { label: 'Privacy Policy', to: '/privacy policy' },
-    ]
-
     return (
-        <footer className='grid gap-8 bg-primary-100 rounded-t-lg pt-24 pb-8 px-10 sm:px-12  text-white font-semibold text-md'>
-            {/* Lets talk for small screens e.g mobile */}
-            <div className='block md:hidden hover:scale-110 duration-200 mb-8 '>
-                <Link to={'contact-us'} >
-                    <p className='text-md opacity-80'>GOT A PROJECT IN MIND?</p>
-                    <p className='text-8xl'>Let's talk</p>
+        <footer className='mt-auto bg-primary-100 px-6 py-6 text-white sm:px-10'>
+            <div className='mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4'>
+                <Link to='/' aria-label='Imageer home'>
+                    <img className='w-24' src={logoWhiteIcon} alt='Imageer' />
                 </Link>
-            </div>
-
-            {/* logo image */}
-            <Link to={'/'}>
-                <img className='mb-8' src={logoWhiteIcon} alt='imageer logo icon' />
-            </Link>
-
-            {/* Page links */}
-            <div className='flex gap-12 justify-between w-full'>
-                <div className='grid grid-flow-col gap-24'>
-                    {/* imageManipulationlinks */}
-                    <div className='capitalize flex flex-col gap-2'>
-                        {imageManipulationlinks.map(link => (
-                            <Link key={link.label} to={link.to} className='capitalize block hover:scale-110 duration-200'>{link.label}</Link>
-                        ))}
-                    </div>
-                    {/* systemLinks */}
-                    <div className='capitalize flex flex-col gap-2'>
-                        {systemLinks.map(link => (
-                            <Link key={link.label} to={link.to} className='capitalize block hover:scale-110 duration-200'>{link.label}</Link>
-                        ))}
-                    </div>
-
-                </div>
-                <div className='hidden md:block hover:scale-110 duration-200'>
-                    <Link to={'contact-us'} >
-                        <p className='text-md opacity-80'>GOT A PROJECT IN MIND?</p>
-                        <p className='text-8xl'>Let's talk</p>
-                    </Link>
-                </div>
-            </div>
-            {/* divider */}
-            <div className={'divider w-full md:w-[calc(100%+3rem)] border-t border-white opacity-80 border-dashed '}></div>
-            <div className='flex flex-wrap gap-4 justify-between'>
-                <div className='flex gap-4 md:w-1/2'>
-                    {miscLinks.map(link => (
-                        <Link key={link.label} to={link.to} className='capitalize block hover:scale-110 duration-200 opacity-80'>{link.label}</Link>
-                    ))}
-                </div>
-                {/* Social Icons */}
-                <div className='flex gap-4 w-full md:w-1/3 md:justify-end'>
-                    {socailItems.map(link => (
-                        <Link to={link.link} title={link?.title ?? ''} key={link.name}>
-                            <svg viewBox={link.viewBox} className={'w-6 h-6 sm:w-8 sm:h-8 fill-white opacity-80 hover:opacity-100 duration-200'}>
-                                {link.icon}
-                            </svg>
-                        </Link>
-                    ))}
-                </div>
-                <div className='w-full '>
-                    <a href={'#top'} title="to top" className='bg-white inline-block p-3.5 rounded-md'>
-                        <svg xmlns="http://www.w3.org/2000/svg" className='fill-[#4D5562] w-4 h-4 rotate-[-90deg]' viewBox="0 0 448 512"><path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/></svg>
-                    </a>
-                </div>
+                <nav className='flex flex-wrap items-center gap-5 text-sm font-semibold' aria-label='Footer navigation'>
+                    <Link to='/upload-image' className='hover:underline'>Uploader</Link>
+                    <Link to='/convert-image' className='hover:underline'>Converter</Link>
+                    <a href={socialLinks.github.url} target='_blank' rel='noreferrer' className='hover:underline'>GitHub</a>
+                </nav>
+                <p className='w-full text-xs text-white/70 sm:w-auto'>© {new Date().getFullYear()} Yousaf Arbaz</p>
             </div>
         </footer>
     )

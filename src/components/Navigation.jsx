@@ -4,7 +4,7 @@ import { logoIcon, logoWhiteIcon, moonFillIcon, sunFillIcon } from '../utils/con
 import { useState } from 'react';
 import { useColorSchemeStore } from '../zustand/store';
 
-export default function Navigation({  }) {
+export default function Navigation() {
   // current route
   const { pathname } = useLocation();
 
@@ -15,10 +15,6 @@ export default function Navigation({  }) {
   const links = [
     { label: 'uploader', to: '/upload-image'},
     { label: 'converter', to: '/convert-image'},
-    // { label: 'enhancer', to: '/enhance-image'},
-    // { label: 'resizer', to: '/resize-image'}
-    { label: 'enhancer', to: '/under-construction'},
-    { label: 'resizer', to: '/under-construction'}
   ]
 
 
@@ -52,7 +48,18 @@ export default function Navigation({  }) {
             <p className='text-primary-100 uppercase font-bold border-r-2 border-clr-100 px-2'>IMAGE</p>
             {links.map((link, i) => <Link key={i} to={link.to} className={'text-clr-300 uppercase border-b-2  hover:border-current hover:font-bold duration-200 ' + ((pathname === link.to) ? ' border-current font-bold ' : ' border-transparent ')}>{link.label}</Link>)}
           </div>
-          <button className={'aspect-square p-2 rounded-lg border-[1px] border-clr-100 cursor-pointer bg-ntrl-white '  + (colorScheme === 'dark' && ' bg-clr-200')} title={colorScheme == 'dark' ? 'enter light mode' : 'enter dark mode'} onClick={handleColorScheme}><img src={colorScheme == 'dark' ? sunFillIcon : moonFillIcon} /></button>
+          <button
+            className={
+              'aspect-square p-2 rounded-lg border cursor-pointer transition-colors duration-200 ' +
+              (colorScheme === 'dark'
+                ? 'border-slate-600 bg-slate-800 text-yellow-200 shadow-sm'
+                : 'border-slate-200 bg-white text-slate-700 shadow-sm hover:bg-slate-100')
+            }
+            title={colorScheme == 'dark' ? 'enter light mode' : 'enter dark mode'}
+            onClick={handleColorScheme}
+          >
+            <img src={colorScheme == 'dark' ? sunFillIcon : moonFillIcon} alt={colorScheme == 'dark' ? 'light mode' : 'dark mode'} className='h-4 w-4' />
+          </button>
         </div>
       </div>
     </nav>
