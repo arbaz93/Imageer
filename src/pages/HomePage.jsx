@@ -24,7 +24,7 @@ export default function HomePage() {
         <div className='home-hero-art relative hidden min-h-[310px] lg:block' aria-hidden='true'>
           <div className='absolute right-8 top-8 h-56 w-56 rotate-6 rounded-2xl bg-primary-100 shadow-2xl'></div>
           <div className='absolute left-8 top-16 h-64 w-64 -rotate-6 rounded-2xl border-8 border-white bg-[#dbeafe] shadow-xl'></div>
-          <div className='absolute bottom-3 right-0 rounded-lg border border-white/80 bg-white px-5 py-4 shadow-xl'><p className='text-xs uppercase tracking-widest text-clr-300'>Output ready</p><p className='mt-1 font-bold text-clr-100'>Clean. Fast. Yours.</p></div>
+          <div className='absolute bottom-3 right-0 rounded-lg border border-clr-100 bg-clr-200 px-5 py-4 shadow-xl'><p className='text-xs uppercase tracking-widest text-clr-300'>Output ready</p><p className='mt-1 font-bold text-clr-100'>Clean. Fast. Yours.</p></div>
         </div>
       </section>
 

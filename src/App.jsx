@@ -13,8 +13,14 @@ export default function App() {
   // Update localStorage whenever colorScheme changes
   useEffect(() => {
     localStorage.setItem('imageerColorScheme', colorScheme);
+    document.documentElement.style.colorScheme = colorScheme;
 
-    (colorScheme === 'dark') ? document.documentElement.classList.add('dark') : document.documentElement.classList.remove('dark');
+    if (colorScheme === 'dark') {
+      document.documentElement.classList.add('dark');
+      return;
+    }
+
+    document.documentElement.classList.remove('dark');
   }, [colorScheme]);
   return (
     <BrowserRouter>

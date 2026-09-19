@@ -23,8 +23,17 @@ export const useNotificationStore = create((set) => ({
   },
 }));
 
+const getPreferredColorScheme = () => {
+  if (typeof window === 'undefined') return 'light';
+
+  const stored = localStorage.getItem('imageerColorScheme');
+  if (stored === 'light' || stored === 'dark') return stored;
+
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+};
+
 export const useColorSchemeStore = create((set) => ({
-  colorScheme: localStorage.getItem('imageerColorScheme') || 'light',
+  colorScheme: getPreferredColorScheme(),
 
   setColorScheme: (newColor) => {
     if(newColor) {

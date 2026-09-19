@@ -11,9 +11,9 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color-scheme: light;
+  color: var(--text-clr-100);
+  background-color: var(--bg-clr-100);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -78,6 +78,7 @@ html {
 body {
   font-family: 'Inter';
   background-color: var(--bg-clr-100);
+  color: var(--text-clr-100);
   min-height: 100vh;
   font-size: 14px;
 }
@@ -162,6 +163,9 @@ button {
 }
 .bg-clr-white {
   background-color: var(--clr-white);
+}
+.bg-ntrl-white {
+  background-color: #FFFFFF;
 }
 /* BORDER Colors */
 .border-primary-100 {
